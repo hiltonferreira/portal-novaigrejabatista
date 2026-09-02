@@ -1,0 +1,36 @@
+{
+  "name": "portal-novaigrejabatista",
+  "version": "1.0.0",
+  "description": "Primeira experiência navegável do Portal Nova Igreja Batista.",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hiltonferreira/portal-novaigrejabatista.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/hiltonferreira/portal-novaigrejabatista/issues"
+  },
+  "homepage": "https://github.com/hiltonferreira/portal-novaigrejabatista#readme",
+  "dependencies": {
+    "next": "^16.3.4",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@types/node": "^26.4.1",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.5",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.3.4",
+    "typescript": "^6.0.3"
+  }
+}

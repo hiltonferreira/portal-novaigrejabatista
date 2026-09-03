@@ -24,25 +24,16 @@
 .homeTheme :global(.page-area main) { width: min(100%, 70rem); padding: 1.75rem 1.25rem 3rem; }
 .homeTheme :global(.mobile-header) { height: 3.75rem; padding-inline: 1.25rem; background: rgba(246,245,239,.96); border-color: var(--home-border); }
 .homeTheme :global(.brand strong) { color: var(--home-navy); font-size: .92rem; font-weight: 600; letter-spacing: -.015em; }
-.opening { display: grid; gap: .8rem; margin: .6rem 0 .6rem; }
-.opening h1 { margin: 0; color: var(--home-navy); font-family: var(--font-display); font-size: clamp(2rem, 8vw, 3rem); font-weight: 700; line-height: 1; letter-spacing: -.05em; }
-.cellContext { display: grid; gap: 1rem; width: 100%; }
-.cellIdentity, .cellLocation { display: grid; align-content: start; gap: .3rem; }
-.cellContext strong { color: var(--home-navy); font-size: .95rem; font-weight: 600; line-height: 1.4; }
-.cellIdentity span, .cellLocation address { color: var(--home-muted); font-size: .8rem; font-weight: 400; line-height: 1.55; }
-.cellLocation { gap: .3rem; }
-.cellLocation address { font-style: normal; }
-.cellContext a { min-height: 2.75rem; display: inline-flex; align-items: flex-start; color: var(--home-navy); font-size: .8rem; font-weight: 600; text-decoration: underline; text-decoration-color: var(--home-orange); text-underline-offset: .25rem; }
-.cellContext a:hover { color: #a43f0c; }
-.card { position: relative; overflow: hidden; padding: 1.5rem; background: var(--home-surface); border: 1px solid var(--home-border); border-radius: .875rem; transition: border-color .2s ease; }
+.card { position: relative; overflow: hidden; padding: 1.3rem; background: var(--home-surface); border: 1px solid var(--home-border); border-radius: .875rem; transition: border-color .2s ease; }
 .card::after { content: ""; position: absolute; z-index: 1; top: 0; left: 0; width: 100%; height: 2px; background: var(--home-orange); border-radius: .875rem .875rem 0 0; transform: scaleX(.12); transform-origin: left; transition: transform .28s ease; }
 .card:hover { border-color: var(--home-blue-gray); }
 .card:hover::after { transform: scaleX(1); }
-.eyebrow { display: grid; gap: .2rem; margin-bottom: 1rem; color: #a43f0c; font-size: .65rem; font-weight: 600; letter-spacing: .17em; line-height: 1.4; text-transform: uppercase; }
-.eyebrow strong { color: var(--home-navy); font-size: .67rem; font-weight: 600; }
-.actionCard { padding-top: 1.8rem; }
-.actionCard h1 { max-width: 23ch; margin: 0; color: var(--home-navy); font-size: clamp(1.55rem, 6vw, 2.35rem); font-weight: 600; line-height: 1.12; letter-spacing: -.035em; }
-.actionCard > p { max-width: 34rem; margin: .9rem 0 1.5rem; color: var(--home-muted); font-size: .95rem; line-height: 1.6; }
+.contextSection { min-width: 0; }
+.cardContext { display: grid; justify-items: start; gap: .65rem; margin-bottom: .8rem; }
+.cardContext strong { color: var(--home-navy); font-size: .66rem; font-weight: 600; letter-spacing: .14em; line-height: 1.4; text-transform: uppercase; }
+.actionCard { padding-top: 1.55rem; }
+.actionCard h3 { max-width: 23ch; margin: 0; color: var(--home-navy); font-size: clamp(1.55rem, 6vw, 2.35rem); font-weight: 600; line-height: 1.12; letter-spacing: -.035em; }
+.actionCard > p { max-width: 34rem; margin: .75rem 0 1.25rem; color: var(--home-muted); font-size: .95rem; line-height: 1.6; }
 .homeTheme :global(.action-link) { display: inline-flex; align-items: center; justify-content: space-between; gap: 1.5rem; min-height: 2.75rem; padding: .62rem 1.35rem; color: var(--home-navy); background: var(--home-orange); border: 1px solid var(--home-orange); border-radius: 999px; font-size: .86rem; font-weight: 600; transition: color .2s ease, background-color .2s ease, border-color .2s ease; }
 .homeTheme :global(.action-link:hover) { color: var(--home-navy); background: var(--home-ivory); border-color: var(--home-ivory); }
 .homeTheme :global(.action-link.secondary) { color: var(--home-navy); background: transparent; border-color: var(--home-navy); }
@@ -50,18 +41,17 @@
 .homeTheme :global(.action-link.subtle) { min-height: 2.75rem; padding: .45rem 0; color: var(--home-navy); background: transparent; border: 0; border-radius: 0; }
 .homeTheme :global(.action-link.subtle:hover) { color: #a43f0c; background: transparent; text-decoration: underline; text-underline-offset: .25rem; }
 .secondaryGrid { display: grid; gap: 1rem; margin-top: 1rem; }
-.informationCard h2, .developmentCard h2 { margin: 0; color: var(--home-navy); font-size: 1.35rem; font-weight: 600; line-height: 1.2; letter-spacing: -.025em; }
-.metadata { margin: 0 0 1.2rem; color: var(--home-muted); font-size: .82rem; font-weight: 400; }
-.lessonTitle { margin: .35rem 0 1.4rem; color: var(--home-text); font-size: .95rem; line-height: 1.55; }
-.assignment { margin: 0 0 .5rem; padding: 1rem 0; border-block: 1px solid var(--home-border); }
+.informationCard h3, .developmentCard h3 { margin: 0; color: var(--home-navy); font-size: 1.35rem; font-weight: 600; line-height: 1.2; letter-spacing: -.025em; }
+.metadata { margin: .8rem 0 1rem; color: var(--home-muted); font-size: .82rem; font-weight: 400; }
+.lessonTitle { margin: .18rem 0 1.15rem; color: var(--home-text); font-size: .95rem; line-height: 1.5; }
+.assignment { margin: 0 0 .45rem; padding: .85rem 0; border-block: 1px solid var(--home-border); }
 .assignment dt { color: var(--home-muted); font-size: .65rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
 .assignment dd { margin: .35rem 0 0; color: var(--home-navy); font-size: .93rem; font-weight: 600; }
-.sideStack { display: grid; gap: 1rem; }
-.developmentCard h2 { max-width: 26ch; margin-bottom: 1rem; }
-.journeySection { padding: 1.5rem 0 0; }
-.journeySection > .eyebrow { padding-inline: .1rem; }
-.journeyList { display: grid; gap: .6rem; }
-.journeyList a { display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: center; min-height: 4.75rem; padding: .9rem 1rem; background: var(--home-surface); border: 1px solid var(--home-border); border-radius: .7rem; cursor: pointer; transition: color .2s ease, background-color .2s ease, border-color .2s ease, transform .12s ease; }
+.sideStack { display: grid; gap: .75rem; }
+.developmentCard h3 { max-width: 26ch; margin-bottom: .85rem; }
+.journeySection { padding: 0; }
+.journeyList { display: grid; gap: .5rem; }
+.journeyList a { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .75rem; align-items: center; min-height: 4.25rem; padding: .75rem .9rem; background: var(--home-surface); border: 1px solid var(--home-border); border-radius: .7rem; cursor: pointer; transition: color .2s ease, background-color .2s ease, border-color .2s ease, transform .12s ease; }
 .journeyList a:hover { background: #fbfaf4; border-color: var(--home-blue-gray); }
 .journeyList a:hover strong { color: #a43f0c; }
 .journeyList a:active { transform: scale(.992); }
@@ -78,14 +68,12 @@
 .homeTheme :global(.bottom-nav .nav-icon) { width: 1.2rem; height: 1.2rem; }
 @media (min-width: 720px) {
   .homeTheme :global(.page-area main) { padding: 2.5rem 2rem 4rem; }
-  .card { padding: 2rem; }
-  .actionCard { padding: 2.25rem; }
+  .card { padding: 1.65rem; }
+  .actionCard { padding: 1.85rem; }
   .secondaryGrid { grid-template-columns: 1.1fr .9fr; gap: 1.25rem; margin-top: 1.25rem; }
 }
-@media (min-width: 880px) {
-  .cellContext { grid-template-columns: minmax(0, 24rem) 1fr; gap: 2rem; }
-  .cellIdentity { max-width: 24rem; }
-  .cellLocation { width: fit-content; max-width: 22.5rem; justify-self: end; margin-top: .09rem; }
+@media (min-width: 1180px) {
+  .journeyList { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (min-width: 1024px) {
   .homeTheme { grid-template-columns: 14rem 1fr; }

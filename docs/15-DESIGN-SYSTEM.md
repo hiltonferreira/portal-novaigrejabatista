@@ -21,13 +21,16 @@
 
 - `[DECISÃO DE PRODUTO]` O site público usa conceitualmente a família “NIB Acumin v105”, com pesos de 300 a 800 e versão mobile própria. Ela é uma referência futura e só poderá ser integrada quando houver autorização e arquivos licenciados.
 - `[DECISÃO DE PRODUTO]` Até essa integração, usar `system-ui, -apple-system, "Segoe UI", sans-serif` nos tokens `--font-body`, `--font-display` e `--font-editorial`.
-- `[DECISÃO DE PRODUTO]` Pesos: corpo e secundário 400; editorial/itálico 500; labels, chapéus e botões 600; títulos de card 600 ou 700; títulos de seção e página 700.
+- `[DECISÃO DE PRODUTO]` Pesos: corpo e secundário 400; editorial/itálico 600 ou 700 quando usado em contraste de título; labels, chapéus e botões 600; títulos de card 600 ou 700; títulos de seção e página 700.
 - `[DECISÃO DE PRODUTO]` Peso 800 é excepcional e nunca padrão. Evitar aparência “Black” generalizada.
 - `[DECISÃO DE PRODUTO]` A escala é própria de aplicação: título de página forte porém contido; título de seção menor; título de card menor; corpo confortável; eyebrow pequeno; metadata discreta.
+- `[DECISÃO DE PRODUTO]` Títulos internos podem usar o padrão editorial `PageTitle`: dois trechos com contraste contido entre navy e laranja; o trecho laranja usa estilo editorial itálico com peso semibold/bold, preservando desenho e presença sem parecer uma palavra fina diante da primeira. Usar sentence case, escala de aplicação e fontes de sistema. O padrão deve reforçar identidade sem assumir proporções de hero ou função decorativa excessiva.
 
 ## Tradução para o Portal
 
 Herdar conceitualmente linguagem editorial, chapéus, proporções, botões, bordas, superfícies, hover, ritmo, identidade e responsividade, sem copiar cegamente o espaçamento de uma landing page para aplicação densa.
+
+`[DECISÃO DE PRODUTO]` A Home aprovada é a referência de composição, densidade, tags, títulos, cards, espaçamento e ações para as demais telas do Portal.
 
 Evitar dashboard SaaS, Material Design genérico, estética bancária, ícones gigantes, círculos decorativos, sombras pesadas, excesso de navy, métricas decorativas, fotos fictícias e logo inventado.
 
@@ -40,6 +43,8 @@ Evitar dashboard SaaS, Material Design genérico, estética bancária, ícones g
 - `[DECISÃO DE PRODUTO]` Na Home, o Próximo Passo usa Action Card e tem maior prioridade visual; o Próximo Encontro da Célula usa Informational Card e tem prioridade secundária. A distinção deve vir de composição, espaço, borda, texto e hierarquia da ação, sem fundos escuros grandes, sombras ou escala exagerada.
 - Person Card: composição textual hierarquizada; não usar avatar fictício como elemento dominante nem responsabilidades como coleção decorativa de badges.
 - Estados semânticos discretos; “atenção” não significa automaticamente “perigo”.
+- Status Tag: componente compacto, arredondado e visualmente secundário à Context Tag. O dado fornece explicitamente a intenção semântica, sem inferência pelo texto: `neutral` para informação futura ou ainda não aplicável, `action` para ação necessária ainda não iniciada, `progress` para atividade efetivamente em andamento e `success` para atividade concluída. Os textos apresentados permanecem próprios de cada domínio. Não usar itálico nem determinar a variante procurando palavras no label.
+- Hierarquia de ações: a principal execução disponível em uma tela ou bloco usa Primary Orange; ações importantes subordinadas usam Secondary; navegação contextual e ações de baixa ênfase usam Ghost ou Text link. Uma tela pode ter ações principais em contextos claramente distintos, mas um mesmo contexto não deve apresentar múltiplas ações primárias concorrentes.
 - Botões: Primary Orange, Primary Navy, Ghost Light, Secondary e Text link; normalmente uma CTA dominante por contexto.
 - Botões principais usam formato pill (`border-radius: 999px`), peso 600, altura contida, espaçamento horizontal confortável e transição suave.
 - Botões usam somente texto por padrão. Não adicionar seta decorativa automaticamente a CTAs de card ou às variantes Primary, Secondary, Ghost Light e Text link.

@@ -1,0 +1,17 @@
+.title {
+  margin: 0;
+  color: #060749;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: clamp(2rem, 8vw, 3.35rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -.052em;
+}
+
+.accent {
+  color: #d95518;
+  font-family: var(--font-editorial, system-ui, -apple-system, "Segoe UI", sans-serif);
+  font-style: italic;
+  font-weight: 600;
+  letter-spacing: -.025em;
+}

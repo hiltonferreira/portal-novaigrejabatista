@@ -1,0 +1,84 @@
+.sectionLabel {
+  margin: 0 0 .45rem .1rem;
+  color: #b55323;
+  font-size: .62rem;
+  font-weight: 600;
+  letter-spacing: .11em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.contextTag {
+  display: inline-flex;
+  width: fit-content;
+  max-width: 100%;
+  padding: .25rem .58rem;
+  color: #8f370e;
+  background: rgba(255, 127, 64, .1);
+  border: 1px solid rgba(255, 127, 64, .42);
+  border-radius: 999px;
+  font-size: .59rem;
+  font-weight: 600;
+  letter-spacing: .11em;
+  line-height: 1.35;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.statusTag {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+  padding: .2rem .48rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-size: .66rem;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: .015em;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.neutral { color: #4f5865; background: rgba(168, 175, 183, .14); border-color: rgba(99, 110, 124, .24); }
+.action { color: #8f370e; background: rgba(255, 127, 64, .11); border-color: rgba(255, 127, 64, .34); }
+.progress { color: #284a79; background: rgba(125, 155, 212, .14); border-color: rgba(82, 118, 188, .28); }
+.success { color: #285a3a; background: rgba(40, 90, 58, .09); border-color: rgba(40, 90, 58, .24); }
+
+.responsibilities {
+  display: grid;
+  gap: .4rem;
+  margin-top: .15rem;
+}
+
+.responsibilities > span {
+  color: #626570;
+  font-size: .62rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.responsibilities ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.responsibilities li {
+  max-width: 100%;
+  padding: .3rem .65rem;
+  color: #060749;
+  background: rgba(235, 235, 223, .65);
+  border: 1px solid rgba(6, 7, 73, .16);
+  border-radius: 999px;
+  font-size: .72rem;
+  font-weight: 600;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}

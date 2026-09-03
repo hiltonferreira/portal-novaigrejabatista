@@ -17,7 +17,7 @@
 
 ## Minha Célula
 
-`[DECISÃO DE PRODUTO]` É um espaço comunitário digital, não painel administrativo. Estrutura: Visão Geral, Pessoas, Encontros, Escalas e Sobre.
+`[DECISÃO DE PRODUTO]` É um espaço comunitário digital, não painel administrativo. Estrutura: Visão Geral, Pessoas, Encontros e Escalas.
 
 Membro pode visualizar, conforme aplicável: próximo encontro, estudo oficial, própria participação e disponibilidade, liderança, local, aniversários e informações comunitárias.
 

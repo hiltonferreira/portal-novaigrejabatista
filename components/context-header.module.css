@@ -1,0 +1,113 @@
+.header {
+  display: grid;
+  gap: .8rem;
+  margin: .6rem 0;
+}
+
+.header h1 {
+  margin: 0;
+}
+
+.context {
+  display: grid;
+  gap: 1rem;
+  width: 100%;
+}
+
+.primary,
+.secondary {
+  display: grid;
+  align-content: start;
+}
+
+.primary {
+  gap: .45rem;
+}
+
+.primary > strong {
+  color: #060749;
+  font-size: .95rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.secondary {
+  gap: .22rem;
+}
+
+.secondary > .secondaryLabel {
+  margin-bottom: .18rem;
+  color: #b55323;
+  font-size: .62rem;
+  font-weight: 600;
+  letter-spacing: .11em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.secondary > span,
+.secondary > address {
+  color: #626570;
+  font-size: .8rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.55;
+}
+
+.secondary > a {
+  display: inline-flex;
+  align-items: flex-start;
+  width: fit-content;
+  min-height: 2.75rem;
+  color: #060749;
+  font-size: .8rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: #ff7f40;
+  text-underline-offset: .25rem;
+}
+
+.secondary > a:hover {
+  color: #a43f0c;
+}
+
+.secondaryWithButton > a {
+  align-items: center;
+  justify-content: center;
+  margin-top: .25rem;
+  padding: .55rem 1.1rem;
+  color: #060749;
+  background: transparent;
+  border: 1px solid #060749;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: background-color .2s ease;
+}
+
+.secondaryWithButton > a:hover {
+  color: #060749;
+  background: #ebebdf;
+}
+
+@media (min-width: 880px) {
+  .context {
+    grid-template-columns: minmax(0, 24rem) 1fr;
+    gap: 2rem;
+  }
+
+  .primary {
+    max-width: 24rem;
+  }
+
+  .secondary {
+    width: fit-content;
+    max-width: 22.5rem;
+    justify-self: end;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .secondaryWithButton > a {
+    transition: none;
+  }
+}

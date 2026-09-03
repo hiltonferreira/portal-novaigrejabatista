@@ -67,3 +67,8 @@ export function ActionLink({ href, children, subtle = false, variant }: { href: 
   const className = resolvedVariant === "text" ? "action-link subtle text" : `action-link ${resolvedVariant}`;
   return <Link className={className} href={href}>{children}</Link>;
 }
+
+export function ActionButton({ children, variant = "primary", ...props }: React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: "primary" | "secondary" }) {
+  const { className = "", ...buttonProps } = props;
+  return <button className={`action-link ${variant} ${className}`.trim()} {...buttonProps}>{children}</button>;
+}

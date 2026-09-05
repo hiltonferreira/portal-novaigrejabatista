@@ -17,12 +17,11 @@ function formatDate(date: string) {
 
 export default async function Page({ params }: { params: Promise<{ multiplicationId: string }> }) {
   const { multiplicationId } = await params;
-  const preparation = pastoralMultiplicationsMock.find(
-    (item) => item.id === multiplicationId && item.state === "Em preparação",
-  );
+  const item = pastoralMultiplicationsMock.find((candidate) => candidate.id === multiplicationId);
 
-  if (!preparation) notFound();
+  if (!item || !("startedOn" in item) || item.state !== "Em preparação") notFound();
 
+  const preparation = item;
   const parentCell = getPastoralCell(preparation.parentCellId);
 
   return (

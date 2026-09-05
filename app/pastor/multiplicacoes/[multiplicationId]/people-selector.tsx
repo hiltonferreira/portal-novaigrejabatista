@@ -8,7 +8,7 @@ type PersonOption = {
   churchRelationshipLabel: string;
 };
 
-export function PeopleSelector({ people }: { people: readonly PersonOption[] }) {
+export function PeopleSelector({ people, originName }: { people: readonly PersonOption[]; originName: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedNames, setSelectedNames] = useState<string[]>([]);
 
@@ -23,10 +23,10 @@ export function PeopleSelector({ people }: { people: readonly PersonOption[] }) 
       <div className={styles.peopleSummary}>
         <div>
           <strong>{selectedNames.length === 0 ? "Nenhuma pessoa prevista registrada." : `${selectedNames.length} ${selectedNames.length === 1 ? "pessoa selecionada" : "pessoas selecionadas"}`}</strong>
-          <p>As pessoas selecionadas permanecem vinculadas à célula Gênesis durante a preparação.</p>
+          <p>As pessoas selecionadas permanecem vinculadas à célula {originName} durante a preparação.</p>
         </div>
-        <button className="action-link secondary" type="button" onClick={() => setIsOpen((current) => !current)} aria-expanded={isOpen}>
-          {isOpen ? "Fechar seleção" : "Selecionar pessoas"}
+        <button className="action-link secondary" type="button" onClick={() => setIsOpen((current) => !current)} aria-expanded={isOpen} disabled={people.length === 0}>
+          {people.length === 0 ? "Participantes indisponíveis" : isOpen ? "Fechar seleção" : "Selecionar pessoas"}
         </button>
       </div>
 
@@ -40,7 +40,7 @@ export function PeopleSelector({ people }: { people: readonly PersonOption[] }) 
         </div>
       )}
 
-      {isOpen && (
+      {isOpen && people.length > 0 && (
         <div className={styles.peopleOptions}>
           {people.map((person) => {
             const checked = selectedNames.includes(person.name);

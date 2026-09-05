@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ContextTag, StatusTag } from "@/components/portal-patterns";
+import { genesisCellMock } from "@/data/cell";
 import { getPastoralCell, pastoralMultiplicationsMock, pastoralPeopleMock } from "@/data/pastoral-structure";
 import styles from "../../pastor.module.css";
+import { PeopleSelector } from "./people-selector";
 import managementStyles from "./preparation.module.css";
 
 const dateFormatter = new Intl.DateTimeFormat("pt-BR", {
@@ -14,6 +16,8 @@ const dateFormatter = new Intl.DateTimeFormat("pt-BR", {
 function formatDate(date: string) {
   return dateFormatter.format(new Date(`${date}T12:00:00`));
 }
+
+const weekdays = ["segunda-feira", "terça-feira", "quarta-feira", "quinta-feira", "sexta-feira"] as const;
 
 export default async function Page({ params }: { params: Promise<{ multiplicationId: string }> }) {
   const { multiplicationId } = await params;
@@ -63,8 +67,8 @@ export default async function Page({ params }: { params: Promise<{ multiplicatio
           <div className={managementStyles.fieldsGrid}>
             <label>Nome futuro<input type="text" name="futureName" placeholder="Nome da futura célula" /></label>
             <label>Futura liderança<select name="futureLeader" defaultValue=""><option value="">Selecionar pessoa</option>{pastoralPeopleMock.map((person) => <option value={person.id} key={person.id}>{person.name}</option>)}</select><small>A futura liderança deve ter a Jornada DNA concluída. O sistema não calcula prontidão.</small></label>
-            <label>Dia<input type="text" name="weekday" placeholder="Ex.: Terça-feira" /></label>
-            <label>Horário<input type="time" name="time" /></label>
+            <label>Dia da semana<select name="weekday" defaultValue=""><option value="">Selecionar dia</option>{weekdays.map((weekday) => <option value={weekday} key={weekday}>{weekday}</option>)}</select></label>
+            <label>Horário<div className={managementStyles.timeField}><input type="time" name="time" /></div></label>
             <label>Local<input type="text" name="location" placeholder="Local previsto dos encontros" /></label>
             <label>Anfitrião<input type="text" name="host" placeholder="Nome do anfitrião" /></label>
           </div>
@@ -76,11 +80,7 @@ export default async function Page({ params }: { params: Promise<{ multiplicatio
             <h2>Composição prevista</h2>
             <p>Durante a preparação, as pessoas selecionadas continuam vinculadas à célula de origem.</p>
           </div>
-          <div className={managementStyles.peoplePlaceholder}>
-            <strong>Nenhuma pessoa prevista registrada.</strong>
-            <p>A seleção de participantes será conectada aos dados reais da célula quando houver persistência.</p>
-            <button className="action-link secondary" type="button">Selecionar pessoas</button>
-          </div>
+          <PeopleSelector people={genesisCellMock.participants} />
         </section>
 
         <div className={managementStyles.actions}>

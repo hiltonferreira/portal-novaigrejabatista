@@ -41,7 +41,8 @@
 .heading p,
 .sectionHeading p,
 .peopleSummary p,
-.actions p {
+.actions p,
+.dataNotice {
   margin: 0;
   color: #626570;
   line-height: 1.55;
@@ -228,6 +229,19 @@
 
 .peopleSummary p {
   font-size: .82rem;
+}
+
+.peopleSummary :global(.action-link):disabled {
+  cursor: not-allowed;
+  opacity: .5;
+}
+
+.dataNotice {
+  padding: .7rem .85rem;
+  border: 1px solid #deded5;
+  border-radius: .65rem;
+  background: #f4f3ec;
+  font-size: .78rem;
 }
 
 .selectedPeople {

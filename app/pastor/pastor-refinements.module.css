@@ -23,15 +23,38 @@
 .pastorRefined [data-pastoral-structure="group"] {
   appearance: none;
   -webkit-appearance: none;
+  position: relative;
   align-self: start;
   min-height: 0;
+  overflow: hidden;
   border-radius: 0;
   box-shadow: none;
 }
 
+.pastorRefined [data-pastoral-structure="group"]::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #ff7f40;
+  transform: scaleX(.16);
+  transform-origin: left center;
+  transition: transform 220ms ease;
+  pointer-events: none;
+}
+
+.pastorRefined [data-pastoral-structure="group"]:hover::before,
+.pastorRefined [data-pastoral-structure="group"]:focus-visible::before,
+.pastorRefined [data-pastoral-structure="group"][aria-pressed="true"]::before {
+  transform: scaleX(1);
+}
+
 .pastorRefined [data-pastoral-structure="group"][aria-pressed="true"] {
   background: #fff8f3;
-  box-shadow: inset 3px 0 0 #ff7f40;
+  box-shadow: none;
 }
 
 .pastorRefined [data-pastoral-structure="group"] [data-structure-label] {
@@ -167,6 +190,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .pastorRefined [data-pastoral-structure="group"],
+  .pastorRefined [data-pastoral-structure="group"]::before,
   .pastorRefined [data-pastoral-structure="node"] {
     transition: none !important;
   }

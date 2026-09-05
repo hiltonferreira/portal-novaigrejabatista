@@ -8,7 +8,7 @@ import type { PastoralPerson } from "@/data/pastoral-structure";
 import { readStoredPreparations, writeStoredPreparations, type StoredMultiplicationPreparation } from "@/lib/test-persistence";
 import managementStyles from "./preparation.module.css";
 
-type Participant = { name: string; churchRelationshipLabel: string };
+type Participant = { name: string; churchRelationshipLabel: string; cellRoles?: readonly string[] };
 type Props = { multiplicationId: string; initial?: StoredMultiplicationPreparation; cells: readonly ChurchCell[]; leaders: readonly PastoralPerson[]; genesisParticipants: readonly Participant[] };
 const weekdays = ["segunda-feira", "terça-feira", "quarta-feira", "quinta-feira", "sexta-feira"] as const;
 const dateFormatter = new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "long", year: "numeric" });

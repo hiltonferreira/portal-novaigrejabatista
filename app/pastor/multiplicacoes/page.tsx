@@ -39,15 +39,14 @@ export default function Page() {
                 <dl className={multiplicationStyles.details}>
                   <div><dt>Célula de origem</dt><dd>{parentCell?.name ?? "Não registrada"}</dd></div>
                   <div><dt>Processo iniciado</dt><dd>{formatDate(item.startedOn)}</dd></div>
-                  <div><dt>Futura liderança</dt><dd>Ainda não definida</dd></div>
-                  <div><dt>Previsão</dt><dd>Ainda não definida</dd></div>
-                  <div><dt>Nome futuro</dt><dd>Ainda não definido</dd></div>
-                  <div><dt>Pessoas previstas</dt><dd>Ainda não registradas</dd></div>
+                  <div><dt>Futura liderança</dt><dd className={multiplicationStyles.pendingValue}>Ainda não definida</dd></div>
+                  <div><dt>Previsão</dt><dd className={multiplicationStyles.pendingValue}>Ainda não definida</dd></div>
+                  <div><dt>Nome futuro</dt><dd className={multiplicationStyles.pendingValue}>Ainda não definido</dd></div>
+                  <div><dt>Pessoas previstas</dt><dd className={multiplicationStyles.pendingValue}>Ainda não registradas</dd></div>
                 </dl>
-                <details className={multiplicationStyles.disclosure}>
-                  <summary className="action-link secondary">Ver preparação</summary>
-                  <p>Durante a preparação, as pessoas permanecem vinculadas à célula de origem. A efetivação da multiplicação é que cria a célula-filha e atualiza as relações derivadas.</p>
-                </details>
+                <Link className="action-link primary" href={`/pastor/multiplicacoes/${item.id}`}>
+                  Gerenciar preparação
+                </Link>
               </article>
             );
           }) : <article className={`${styles.overviewCard} ${multiplicationStyles.card}`}><ContextTag>Acompanhamento da multiplicação</ContextTag><p>Nenhuma multiplicação está em preparação neste momento.</p></article>}

@@ -22,6 +22,15 @@ export default function Page() {
     <div className={`${styles.directoryPage} ${multiplicationStyles.page}`}>
       <Link className={styles.backToOverview} href="/pastor">‹ Voltar para Visão Geral</Link>
 
+      <div className={multiplicationStyles.pageIntro}>
+        <div>
+          <p className={multiplicationStyles.eyebrow}>Multiplicações</p>
+          <h1>Acompanhe e inicie preparações</h1>
+          <p>Visualize processos em andamento e inicie uma nova preparação definindo primeiro a célula de origem.</p>
+        </div>
+        <Link className="action-link primary" href="/pastor/multiplicacoes/nova">Iniciar preparação</Link>
+      </div>
+
       <SectionBlock id="multiplications-in-preparation" label="Em preparação">
         <div className={multiplicationStyles.grid}>
           {preparations.length ? preparations.map((item) => {

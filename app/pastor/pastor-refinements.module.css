@@ -1,0 +1,123 @@
+.pastorRefined :global(.page-area main) {
+  width: min(100%, 70rem);
+}
+
+.pastorRefined :global(.nav-list a[aria-current="page"]) {
+  color: #060749;
+  background: #ebebdf;
+  font-weight: 600;
+}
+
+.pastorRefined :global(.nav-list a[aria-current="page"]::before) {
+  background: #ff7f40;
+}
+
+.pastorRefined [aria-label="Seções da Liderança Pastoral"] {
+  width: 100%;
+}
+
+.pastorRefined [data-pastoral-structure="workspace"] {
+  border-radius: .875rem;
+}
+
+.pastorRefined [data-pastoral-structure="group"] {
+  appearance: none;
+  -webkit-appearance: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.pastorRefined [data-pastoral-structure="group"][aria-pressed="true"] {
+  background: #fff8f3;
+  box-shadow: inset 3px 0 0 #ff7f40;
+}
+
+.pastorRefined [data-pastoral-structure="group"] [data-structure-label] {
+  color: #626570;
+  font-size: .66rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.pastorRefined [data-pastoral-structure="person-name"] {
+  color: #060749;
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.pastorRefined [data-pastoral-structure="relationship-list"] {
+  display: grid;
+  gap: .5rem;
+}
+
+.pastorRefined [data-pastoral-structure="relationship"] {
+  display: grid;
+  gap: .08rem;
+  min-width: 0;
+  padding: .12rem 0;
+}
+
+.pastorRefined [data-pastoral-structure="relationship"] strong {
+  color: #060749;
+  font-size: .9rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.pastorRefined [data-pastoral-structure="relationship"] small {
+  color: #626570;
+  font-size: .76rem;
+  line-height: 1.4;
+}
+
+.pastorRefined [data-pastoral-structure="canvas"] {
+  min-height: 32rem;
+}
+
+.pastorRefined [data-pastoral-structure="node"] {
+  appearance: none;
+  -webkit-appearance: none;
+  box-shadow: none;
+}
+
+.pastorRefined [data-pastoral-structure="node"][aria-pressed="true"] {
+  background: #fff8f3;
+  border-color: #060749;
+  box-shadow: inset 0 0 0 1px #060749;
+}
+
+.pastorRefined [data-pastoral-structure="panel"] {
+  min-width: 0;
+  background: #fffef9;
+}
+
+.pastorRefined [data-pastoral-structure="panel"] h2 {
+  font-size: 1.35rem;
+  line-height: 1.2;
+}
+
+@media (min-width: 720px) {
+  .pastorRefined [data-pastoral-structure="canvas"] {
+    min-height: 34rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .pastorRefined [data-pastoral-structure="workspace"][data-has-panel="true"] {
+    grid-template-columns: minmax(0, 1fr) minmax(19rem, 22rem);
+  }
+
+  .pastorRefined [data-pastoral-structure="canvas"] {
+    min-height: 36rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pastorRefined [data-pastoral-structure="group"],
+  .pastorRefined [data-pastoral-structure="node"] {
+    transition: none !important;
+  }
+}

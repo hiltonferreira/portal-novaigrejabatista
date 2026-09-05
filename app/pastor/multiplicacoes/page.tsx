@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ContextTag, SectionBlock, StatusTag } from "@/components/portal-patterns";
 import { getPastoralCell, pastoralMultiplicationsMock } from "@/data/pastoral-structure";
 import styles from "../pastor.module.css";
+import multiplicationStyles from "./multiplicacoes.module.css";
 
 const dateFormatter = new Intl.DateTimeFormat("pt-BR", {
   day: "2-digit",
@@ -18,24 +19,24 @@ export default function Page() {
   const history = pastoralMultiplicationsMock.filter((item) => item.state === "Efetivada");
 
   return (
-    <div className={styles.directoryPage} data-pastoral-multiplications="page">
+    <div className={`${styles.directoryPage} ${multiplicationStyles.page}`}>
       <Link className={styles.backToOverview} href="/pastor">‹ Voltar para Visão Geral</Link>
 
       <SectionBlock id="multiplications-in-preparation" label="Em preparação">
-        <div data-pastoral-multiplications="grid">
+        <div className={multiplicationStyles.grid}>
           {preparations.length ? preparations.map((item) => {
             const parentCell = getPastoralCell(item.parentCellId);
             return (
-              <article className={styles.overviewCard} data-pastoral-multiplications="card" key={item.id}>
-                <div data-pastoral-multiplications="card-header">
+              <article className={`${styles.overviewCard} ${multiplicationStyles.card}`} key={item.id}>
+                <div className={multiplicationStyles.cardHeader}>
                   <ContextTag>Acompanhamento da multiplicação</ContextTag>
                   <StatusTag tone="progress">Em preparação</StatusTag>
                 </div>
-                <div data-pastoral-multiplications="identity">
+                <div className={multiplicationStyles.identity}>
                   <h2>{parentCell?.name ?? "Célula de origem"}</h2>
                   <p>{item.description}</p>
                 </div>
-                <dl data-pastoral-multiplications="details">
+                <dl className={multiplicationStyles.details}>
                   <div><dt>Célula de origem</dt><dd>{parentCell?.name ?? "Não registrada"}</dd></div>
                   <div><dt>Processo iniciado</dt><dd>{formatDate(item.startedOn)}</dd></div>
                   <div><dt>Futura liderança</dt><dd>Ainda não definida</dd></div>
@@ -43,18 +44,18 @@ export default function Page() {
                   <div><dt>Nome futuro</dt><dd>Ainda não definido</dd></div>
                   <div><dt>Pessoas previstas</dt><dd>Ainda não registradas</dd></div>
                 </dl>
-                <details data-pastoral-multiplications="disclosure">
+                <details className={multiplicationStyles.disclosure}>
                   <summary className="action-link secondary">Ver preparação</summary>
                   <p>Durante a preparação, as pessoas permanecem vinculadas à célula de origem. A efetivação da multiplicação é que cria a célula-filha e atualiza as relações derivadas.</p>
                 </details>
               </article>
             );
-          }) : <article className={styles.overviewCard} data-pastoral-multiplications="empty"><ContextTag>Acompanhamento da multiplicação</ContextTag><p>Nenhuma multiplicação está em preparação neste momento.</p></article>}
+          }) : <article className={`${styles.overviewCard} ${multiplicationStyles.card}`}><ContextTag>Acompanhamento da multiplicação</ContextTag><p>Nenhuma multiplicação está em preparação neste momento.</p></article>}
         </div>
       </SectionBlock>
 
       <SectionBlock id="multiplication-history" label="Histórico de multiplicações">
-        <article className={`${styles.overviewCard} ${styles.directoryCard}`} data-pastoral-multiplications="history">
+        <article className={`${styles.overviewCard} ${styles.directoryCard} ${multiplicationStyles.history}`}>
           <ContextTag>Multiplicações efetivadas</ContextTag>
           <ul className={styles.directoryList}>
             {history.map((item) => {

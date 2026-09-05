@@ -17,7 +17,7 @@ export function NewPreparationForm({ cells }: Props) {
     event.preventDefault();
     if (!cellId) return;
 
-    router.push(`/pastor/multiplicacoes/nova/revisao?cellId=${encodeURIComponent(cellId)}`);
+    router.push(`/pastor/multiplicacoes/rascunho?cellId=${encodeURIComponent(cellId)}`);
   }
 
   return (

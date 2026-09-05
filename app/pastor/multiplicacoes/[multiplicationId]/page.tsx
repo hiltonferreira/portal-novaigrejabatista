@@ -19,26 +19,43 @@ function formatDate(date: string) {
 
 const weekdays = ["segunda-feira", "terça-feira", "quarta-feira", "quinta-feira", "sexta-feira"] as const;
 
-export default async function Page({ params }: { params: Promise<{ multiplicationId: string }> }) {
+export default async function Page({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ multiplicationId: string }>;
+  searchParams: Promise<{ cellId?: string }>;
+}) {
   const { multiplicationId } = await params;
+  const { cellId } = await searchParams;
+  const isDraft = multiplicationId === "rascunho";
+
   const item = pastoralMultiplicationsMock.find((candidate) => candidate.id === multiplicationId);
+  if (!isDraft && (!item || !("startedOn" in item) || item.state !== "Em preparação")) notFound();
 
-  if (!item || !("startedOn" in item) || item.state !== "Em preparação") notFound();
+  const draftCell = isDraft && cellId ? getPastoralCell(cellId) : undefined;
+  if (isDraft && (!draftCell || draftCell.status !== "Ativa")) notFound();
 
-  const preparation = item;
-  const parentCell = getPastoralCell(preparation.parentCellId);
+  const parentCell = isDraft ? draftCell : getPastoralCell(item!.parentCellId);
+  const startedOn = isDraft
+    ? new Date().toISOString().slice(0, 10)
+    : (item as Extract<(typeof pastoralMultiplicationsMock)[number], { state: "Em preparação" }>).startedOn;
+  const originName = parentCell?.name ?? "Célula de origem";
+  const people = parentCell?.id === "cell-genesis" ? genesisCellMock.participants : [];
 
   return (
     <div className={`${styles.directoryPage} ${managementStyles.page}`}>
-      <Link className={styles.backToOverview} href="/pastor/multiplicacoes">‹ Voltar para Multiplicações</Link>
+      <Link className={styles.backToOverview} href={isDraft ? "/pastor/multiplicacoes/nova" : "/pastor/multiplicacoes"}>
+        ‹ {isDraft ? "Voltar para escolher a célula" : "Voltar para Multiplicações"}
+      </Link>
 
       <header className={managementStyles.heading}>
         <div>
-          <p className={managementStyles.eyebrow}>Preparação da multiplicação</p>
-          <h1>{parentCell?.name ?? "Célula de origem"}</h1>
+          <p className={managementStyles.eyebrow}>{isDraft ? "Nova preparação" : "Preparação da multiplicação"}</p>
+          <h1>{originName}</h1>
           <p>Organize os dados previstos para a futura célula sem alterar os vínculos atuais durante a preparação.</p>
         </div>
-        <StatusTag tone="progress">Em preparação</StatusTag>
+        <StatusTag tone="progress">{isDraft ? "Rascunho" : "Em preparação"}</StatusTag>
       </header>
 
       <form className={managementStyles.form}>
@@ -48,9 +65,9 @@ export default async function Page({ params }: { params: Promise<{ multiplicatio
             <h2>Dados da preparação</h2>
           </div>
           <div className={managementStyles.readonlyGrid}>
-            <div><span>Célula de origem</span><strong>{parentCell?.name ?? "Não registrada"}</strong></div>
-            <div><span>Processo iniciado</span><strong>{formatDate(preparation.startedOn)}</strong></div>
-            <div><span>Iniciado por</span><strong>Não registrado nesta demonstração</strong></div>
+            <div><span>Célula de origem</span><strong>{originName}</strong></div>
+            <div><span>Processo iniciado</span><strong>{formatDate(startedOn)}</strong></div>
+            <div><span>Iniciado por</span><strong>{isDraft ? "Usuário atual" : "Não registrado nesta demonstração"}</strong></div>
           </div>
           <div className={managementStyles.fieldsGrid}>
             <label>Previsão da multiplicação<input type="date" name="expectedDate" /></label>
@@ -80,23 +97,26 @@ export default async function Page({ params }: { params: Promise<{ multiplicatio
             <h2>Composição prevista</h2>
             <p>Durante a preparação, as pessoas selecionadas continuam vinculadas à célula de origem.</p>
           </div>
-          <PeopleSelector people={genesisCellMock.participants} />
+          <PeopleSelector people={people} originName={originName} />
+          {people.length === 0 && <p className={managementStyles.dataNotice}>Ainda não há participantes demonstrativos cadastrados para esta célula.</p>}
         </section>
 
         <div className={managementStyles.actions}>
-          <button className="action-link primary" type="button">Salvar alterações</button>
+          <button className="action-link primary" type="button">{isDraft ? "Iniciar preparação" : "Salvar alterações"}</button>
           <p>Esta versão demonstra o fluxo e não persiste alterações.</p>
         </div>
       </form>
 
-      <section className={`${managementStyles.section} ${managementStyles.effectuation}`}>
-        <div className={managementStyles.sectionHeading}>
-          <ContextTag>Efetivação da multiplicação</ContextTag>
-          <h2>Concluir a preparação</h2>
-          <p>A efetivação cria a célula-filha e consolida as relações da multiplicação. Ela será tratada em um fluxo separado de revisão e confirmação.</p>
-        </div>
-        <button className="action-link secondary" type="button">Efetivar multiplicação</button>
-      </section>
+      {!isDraft && (
+        <section className={`${managementStyles.section} ${managementStyles.effectuation}`}>
+          <div className={managementStyles.sectionHeading}>
+            <ContextTag>Efetivação da multiplicação</ContextTag>
+            <h2>Concluir a preparação</h2>
+            <p>A efetivação cria a célula-filha e consolida as relações da multiplicação. Ela será tratada em um fluxo separado de revisão e confirmação.</p>
+          </div>
+          <button className="action-link secondary" type="button">Efetivar multiplicação</button>
+        </section>
+      )}
     </div>
   );
 }

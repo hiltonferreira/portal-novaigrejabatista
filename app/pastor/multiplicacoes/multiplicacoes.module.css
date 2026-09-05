@@ -1,6 +1,6 @@
 .page {
   display: grid;
-  gap: 1.15rem;
+  gap: 1.8rem;
 }
 
 .grid {
@@ -23,7 +23,7 @@
 
 .identity {
   display: grid;
-  gap: .35rem;
+  gap: .3rem;
 }
 
 .identity h2 {
@@ -48,14 +48,14 @@
   width: 100%;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0 1.5rem;
-  margin: .15rem 0 0;
+  margin: .05rem 0 0;
   border-top: 1px solid #d8d8cf;
 }
 
 .details div {
   display: grid;
-  gap: .18rem;
-  padding: .75rem 0;
+  gap: .16rem;
+  padding: .62rem 0;
   border-bottom: 1px solid #d8d8cf;
 }
 
@@ -76,28 +76,9 @@
   line-height: 1.45;
 }
 
-.disclosure {
-  display: grid;
-  justify-items: start;
-  gap: .7rem;
-  max-width: 42rem;
-}
-
-.disclosure summary {
-  list-style: none;
-  cursor: pointer;
-}
-
-.disclosure summary::-webkit-details-marker {
-  display: none;
-}
-
-.disclosure p {
-  margin: 0;
-  padding-left: .05rem;
-  color: #626570;
-  font-size: .82rem;
-  line-height: 1.55;
+.details .pendingValue {
+  color: #6f7078;
+  font-weight: 500;
 }
 
 .history {

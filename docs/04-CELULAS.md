@@ -9,6 +9,8 @@
 - Estrutura: Rede derivada/contextual, Supervisão, Líder, Líderes em Treinamento, Secretaria, anfitriões e participantes.
 - Histórico: locais, lideranças, participações e multiplicações.
 
+`[DECISÃO DE PRODUTO]` Quando a precisão histórica disponível for somente o ano em que a Célula começou ou foi estabelecida, representá-la como ano (`establishedYear`) sem inventar dia e mês. Essa informação histórica não deve ser inferida de `createdAt`, que representa a criação técnica do registro.
+
 ## Status e origem
 
 - `[CONFIRMADO]` Status: Em implantação, Ativa ou Inativa.

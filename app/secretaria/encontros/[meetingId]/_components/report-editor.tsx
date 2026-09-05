@@ -21,7 +21,7 @@ const fields: readonly { key: keyof Narrative; label: string; placeholder: strin
 export function ReportEditor({ meeting, attendance, gathering, initialReport }: {
   meeting: { title: string; study: { lessonNumber: string; bibleReference: string } };
   attendance: { totalPresent: number; absent: number; visitors: readonly { id: string; name: string }[] };
-  gathering: string;
+  gathering: { primary: string; secondary: string };
   initialReport: { status: ReportStatus; narrative: Narrative };
 }) {
   const [narrative, setNarrative] = useState<Narrative>({ ...initialReport.narrative });
@@ -58,7 +58,7 @@ export function ReportEditor({ meeting, attendance, gathering, initialReport }: 
                 <div><dt>Estudo</dt><dd><strong>{meeting.title}</strong><span>{meeting.study.lessonNumber} · {meeting.study.bibleReference}</span></dd></div>
                 <div><dt>Presença</dt><dd><strong>{attendance.totalPresent} presentes</strong><span>{attendance.absent} ausentes</span></dd></div>
                 <div><dt>Visitantes</dt><dd>{attendance.visitors.length > 0 ? <><strong>{attendance.visitors.length} {attendance.visitors.length === 1 ? "visitante" : "visitantes"}</strong><span>{attendance.visitors.map((visitor) => visitor.name).join(", ")}</span></> : "Nenhum visitante registrado"}</dd></div>
-                <div><dt>Confraternização</dt><dd>{gathering}</dd></div>
+                <div><dt>Confraternização</dt><dd><strong>{gathering.primary}</strong><span>{gathering.secondary}</span></dd></div>
               </dl>
             </section>
 

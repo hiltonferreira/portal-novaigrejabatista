@@ -1,20 +1,18 @@
 import type { StatusTone } from "@/components/portal-patterns";
 import { genesisCellMock } from "@/data/cell";
+import { resolveStudyForEncounter } from "@/data/pastoral-studies";
 
 type OperationalStatus = {
   label: string;
   tone: StatusTone;
 };
 
-type SecretariatMeeting = {
+export type SecretariatMeeting = {
   id: string;
   dateIso: string;
   startTime: string;
   title: string;
-  study?: {
-    lessonNumber: string;
-    bibleReference: string;
-  };
+  study?: { lessonNumber: string; bibleReference: string };
   studyPending?: boolean;
   serviceAssignments?: readonly {
     serviceFunction: string;
@@ -33,16 +31,18 @@ const futureMeetingDefaults = {
   report: { label: "Após o encontro", tone: "neutral" },
 } as const satisfies Pick<SecretariatMeeting["statuses"], "attendance" | "report">;
 
+const scheduledNextMeetingStudy = resolveStudyForEncounter(genesisCellMock.nextMeeting.dateIso);
+
 export const secretariatMeetingsMock = {
   upcoming: [
     {
       id: genesisCellMock.nextMeeting.id,
       dateIso: genesisCellMock.nextMeeting.dateIso,
       startTime: genesisCellMock.nextMeeting.startTime,
-      title: genesisCellMock.nextMeeting.study.title,
+      title: scheduledNextMeetingStudy?.title ?? "Estudo a definir",
       study: {
-        lessonNumber: genesisCellMock.nextMeeting.study.lessonNumber,
-        bibleReference: genesisCellMock.nextMeeting.study.bibleReference,
+        lessonNumber: scheduledNextMeetingStudy?.lessonNumber ?? genesisCellMock.nextMeeting.study.lessonNumber,
+        bibleReference: scheduledNextMeetingStudy?.baseReference ?? genesisCellMock.nextMeeting.study.bibleReference,
       },
       serviceAssignments: [
         { serviceFunction: "Recepção", symbol: "🚪", assignments: ["Lucas Ferreira"] },
@@ -111,6 +111,21 @@ export const secretariatMeetingsMock = {
 
 export type SecretariatMeetingMock = (typeof secretariatMeetingsMock.upcoming)[number] | (typeof secretariatMeetingsMock.previous)[number];
 
+export function createSessionMeetingId(dateIso: string, startTime: string) {
+  return `genesis-created_${dateIso}_${startTime.replace(":", "h")}_${crypto.randomUUID().slice(0, 8)}`;
+}
+
+function parseSessionMeetingId(meetingId: string): SecretariatMeeting | undefined {
+  const match = /^genesis-created_(\d{4}-\d{2}-\d{2})_(\d{2}h\d{2})_([a-z0-9-]+)$/.exec(meetingId);
+  if (!match) return undefined;
+  const [, dateIso, encodedTime] = match;
+  return {
+    id: meetingId, dateIso, startTime: encodedTime.replace("h", ":"),
+    title: "Estudo a definir", studyPending: true,
+    statuses: { communication: { label: "A preparar", tone: "action" }, attendance: futureMeetingDefaults.attendance, report: futureMeetingDefaults.report },
+  };
+}
+
 export const secretariatMeetingOverviewMock = {
   encounterId: genesisCellMock.nextMeeting.id,
   communication: {
@@ -148,6 +163,6 @@ export const secretariatCommunicationMock = {
   schedulePath: string;
 };
 
-export function getSecretariatMeetingById(meetingId: string): SecretariatMeetingMock | undefined {
-  return [...secretariatMeetingsMock.upcoming, ...secretariatMeetingsMock.previous].find((meeting) => meeting.id === meetingId);
+export function getSecretariatMeetingById(meetingId: string): SecretariatMeeting | undefined {
+  return [...secretariatMeetingsMock.upcoming, ...secretariatMeetingsMock.previous].find((meeting) => meeting.id === meetingId) ?? parseSessionMeetingId(meetingId);
 }

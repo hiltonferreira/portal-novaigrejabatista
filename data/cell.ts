@@ -6,6 +6,18 @@ export type CellContext = {
   mapsUrl: string;
 };
 
+export type ChurchCell = {
+  id: string;
+  name: string;
+  status: "Em implantação" | "Ativa" | "Inativa";
+  establishedYear?: number;
+  establishedYearIsDemonstration?: boolean;
+  weekday: string;
+  startTime: string;
+  leaderId: string;
+  traineeLeaderIds: readonly string[];
+};
+
 type CellRole = {
   role: "Líder" | "Líder em Treinamento" | "Secretaria da Célula" | "Anfitriã";
   name: string;
@@ -106,6 +118,13 @@ export const mariaServiceAssignmentsMock = genesisCellMock.serviceAssignments
   .toSorted((firstAssignment, secondAssignment) => firstAssignment.meeting.dateIso.localeCompare(secondAssignment.meeting.dateIso));
 
 export type PersonalServiceAssignment = (typeof mariaServiceAssignmentsMock)[number];
+
+export const churchCellsMock: readonly ChurchCell[] = [
+  { id: "cell-genesis", name: genesisCellMock.name, status: "Ativa", establishedYear: 2022, weekday: genesisCellMock.weekday, startTime: genesisCellMock.startTime, leaderId: "person-rafael-souza", traineeLeaderIds: ["person-maria-oliveira"] },
+  { id: "cell-a-forja", name: "A Forja", status: "Ativa", establishedYear: 2024, establishedYearIsDemonstration: true, weekday: "segunda-feira", startTime: "20h00", leaderId: "person-jonathan", traineeLeaderIds: [] },
+  { id: "cell-betel", name: "Betel", status: "Ativa", establishedYear: 2023, establishedYearIsDemonstration: true, weekday: "terça-feira", startTime: "20h00", leaderId: "person-wiriquis", traineeLeaderIds: [] },
+  { id: "cell-kairos", name: "Kairós", status: "Em implantação", establishedYear: 2026, establishedYearIsDemonstration: true, weekday: "quinta-feira", startTime: "19h30", leaderId: "person-priscila-andrade", traineeLeaderIds: [] },
+];
 
 export function formatShortDate(dateIso: string) {
   const [, month, day] = dateIso.split("-");

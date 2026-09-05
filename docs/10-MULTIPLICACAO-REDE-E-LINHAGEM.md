@@ -23,6 +23,9 @@ Ao efetivar: criar célula filha; origem Multiplicação; registrar origem e Lí
 
 - `[CONFIRMADO]` Linhagem/árvore representa toda a descendência.
 - `[CONFIRMADO]` O critério “mais de 5” para Supervisão usa toda a descendência; Rede usa somente filhos diretos.
+- `[DECISÃO DE PRODUTO]` A árvore de células representa a linhagem originada por multiplicações. Ela não representa automaticamente a estrutura atual de Supervisão.
+- `[DECISÃO DE PRODUTO]` A árvore pastoral de células representa a linhagem das Cells derivada exclusivamente das multiplicações efetivadas. A estrutura atual de Supervisão é independente e não é inferida pela linhagem.
+- `[DECISÃO DE PRODUTO]` Uma futura visualização pastoral poderá oferecer visão geral das células, foco em uma Cell, navegação pela linhagem e expansão/recolhimento de descendentes. A relação estrutural entre célula de origem e célula filha deve permitir derivar esses modos sem confundir linhagem, Rede e Supervisão.
 
 ## Líder de origem
 

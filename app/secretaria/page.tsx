@@ -3,16 +3,8 @@ import { ActionLink } from "@/components/portal-shell";
 import { ContextTag, SectionLabel, StatusTag } from "@/components/portal-patterns";
 import { formatShortDate } from "@/data/cell";
 import { secretariatOverviewMock as overview } from "@/data/secretariat";
+import { MeetingTemporalTag } from "./_components/meeting-temporal-tag";
 import styles from "./secretaria.module.css";
-
-function formatDayMonthTag(dateIso: string) {
-  const [year, month, day] = dateIso.split("-").map(Number);
-  const monthLabel = new Intl.DateTimeFormat("pt-BR", { month: "short", timeZone: "UTC" })
-    .format(new Date(Date.UTC(year, month - 1, day)))
-    .replace(".", "")
-    .toUpperCase();
-  return `${day.toString().padStart(2, "0")} ${monthLabel}`;
-}
 
 export default function SecretariatOverviewPage() {
   const meeting = overview.nextMeeting;
@@ -33,7 +25,7 @@ export default function SecretariatOverviewPage() {
         <section className={styles.contextSection} aria-labelledby="next-meeting-label">
           <SectionLabel id="next-meeting-label">Próximo encontro</SectionLabel>
           <article className={`${styles.card} ${styles.meetingCard}`}>
-            <ContextTag>{formatDayMonthTag(meeting.dateIso)}</ContextTag>
+            <MeetingTemporalTag dateIso={meeting.dateIso} />
             <h2>{meeting.study.title}</h2>
             <p className={styles.studyMeta}>{meeting.study.lessonNumber} · {meeting.study.bibleReference}</p>
             <p className={styles.meetingTime}>Terça-feira · {formatShortDate(meeting.dateIso)} · {meeting.startTime}</p>
@@ -46,7 +38,7 @@ export default function SecretariatOverviewPage() {
               ))}
             </dl>
             <div className={styles.allMeetingsLink}>
-              <ActionLink href="/secretaria/encontros" variant="text">Ver todos os encontros</ActionLink>
+              <ActionLink href="/secretaria/encontros" variant="secondary">Ver todos os encontros</ActionLink>
             </div>
           </article>
         </section>
@@ -55,7 +47,7 @@ export default function SecretariatOverviewPage() {
       <section className={styles.organizationSection} aria-labelledby="organization-label">
         <SectionLabel id="organization-label">Organização da célula</SectionLabel>
         <article className={`${styles.card} ${styles.organizationCard}`}>
-          <ContextTag>Esta semana</ContextTag>
+          <ContextTag>Escalas e informações</ContextTag>
           <ul>
             {overview.organization.map((item) => (
               <li key={item.title}>

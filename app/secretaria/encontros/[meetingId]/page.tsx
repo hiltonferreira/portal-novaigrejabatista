@@ -20,14 +20,11 @@ export default async function SecretariatMeetingPage({ params }: { params: Promi
 
   const meeting = getSecretariatMeetingById(meetingId);
   if (!meeting) notFound();
-  if (meeting.id !== overview.encounterId) {
-    return (
-      <section className={styles.placeholder} aria-labelledby="meeting-placeholder-title">
-        <SectionLabel id="meeting-placeholder-title">Visão geral do encontro</SectionLabel>
-        <p>Esta visão será detalhada em uma próxima etapa.</p>
-      </section>
-    );
-  }
+  const meetingOverview = meeting.id === overview.encounterId ? overview : {
+    communication: { status: meeting.statuses.communication ?? { label: "A preparar", tone: "action" as const }, description: overview.communication.description },
+    attendance: { status: meeting.statuses.attendance, description: overview.attendance.description },
+    report: { status: meeting.statuses.report, description: overview.report.description },
+  };
   const study = "study" in meeting ? meeting.study : undefined;
 
   return (
@@ -39,9 +36,9 @@ export default async function SecretariatMeetingPage({ params }: { params: Promi
           <div className={styles.communicationBlock}>
             <div className={styles.operationHeading}>
               <h3>Comunicação</h3>
-              <StatusTag tone={overview.communication.status.tone}>{overview.communication.status.label}</StatusTag>
+              <StatusTag tone={meetingOverview.communication.status.tone}>{meetingOverview.communication.status.label}</StatusTag>
             </div>
-            <p>{overview.communication.description}</p>
+            <p>{meetingOverview.communication.description}</p>
             <ActionLink href={`/secretaria/encontros/${meetingId}/comunicacao`} variant="primary">Preparar comunicação</ActionLink>
           </div>
           <dl className={styles.preparationContext}>
@@ -68,15 +65,15 @@ export default async function SecretariatMeetingPage({ params }: { params: Promi
           <div className={styles.registrationGrid}>
             <OperationBlock
               title="Presença"
-              status={overview.attendance.status}
-              description={overview.attendance.description}
+              status={meetingOverview.attendance.status}
+              description={meetingOverview.attendance.description}
               action="Registrar presença"
               href={`/secretaria/encontros/${meetingId}/presenca`}
             />
             <OperationBlock
               title="Relatório"
-              status={overview.report.status}
-              description={overview.report.description}
+              status={meetingOverview.report.status}
+              description={meetingOverview.report.description}
               action="Preencher relatório"
               href={`/secretaria/encontros/${meetingId}/relatorio`}
             />

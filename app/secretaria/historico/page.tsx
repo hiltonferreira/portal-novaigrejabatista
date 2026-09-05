@@ -1,5 +1,5 @@
-import { SecretariatSectionPlaceholder } from "../_components/section-placeholder";
+import { SecretariatHistoryOverview } from "../_components/secretariat-history-overview";
 
 export default function SecretariatHistoryPage() {
-  return <SecretariatSectionPlaceholder title="Histórico" />;
+  return <SecretariatHistoryOverview />;
 }

@@ -1,5 +1,18 @@
-import { SecretariatSectionPlaceholder } from "../_components/section-placeholder";
+import { SnackOrganizationEditor } from "../_components/snack-organization-editor";
+import { septemberSnackOrganizationsMock, snackPeopleMock } from "@/data/snack-organization";
+import { secretariatMeetingsMock } from "@/data/secretariat-meetings";
+import { genesisCellMock } from "@/data/cell";
 
 export default function SecretariatSnackPage() {
-  return <SecretariatSectionPlaceholder title="Lanche" />;
+  const encounters = [...secretariatMeetingsMock.previous, ...secretariatMeetingsMock.upcoming]
+    .map(({ id, dateIso, startTime }) => ({ id, dateIso, startTime }));
+
+  return (
+    <SnackOrganizationEditor
+      cellSchedule={{ weekday: genesisCellMock.weekday, startTime: genesisCellMock.startTime }}
+      encounters={encounters}
+      initialOrganizations={septemberSnackOrganizationsMock}
+      people={snackPeopleMock}
+    />
+  );
 }

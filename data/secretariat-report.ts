@@ -1,6 +1,6 @@
 import type { StatusTone } from "@/components/portal-patterns";
 import { genesisAttendanceMock } from "@/data/secretariat-attendance";
-import { secretariatCommunicationMock } from "@/data/secretariat-meetings";
+import { getSnackOrganizationByEncounterId } from "@/data/snack-organization";
 
 export type ReportStatus = "draft" | "sentToLeader" | "viewedByLeader";
 
@@ -29,7 +29,7 @@ export const reportStatusPresentation: Record<ReportStatus, {
 export const secretariatReportMock = {
   encounterId: genesisAttendanceMock.encounterId,
   attendanceSource: genesisAttendanceMock,
-  gatheringSource: secretariatCommunicationMock.gathering,
+  snackOrganizationSource: getSnackOrganizationByEncounterId(genesisAttendanceMock.encounterId),
   status: "draft",
   narrative: {
     meetingSummary: "",
@@ -39,7 +39,7 @@ export const secretariatReportMock = {
 } as const satisfies {
   encounterId: string;
   attendanceSource: typeof genesisAttendanceMock;
-  gatheringSource: typeof secretariatCommunicationMock.gathering;
+  snackOrganizationSource: ReturnType<typeof getSnackOrganizationByEncounterId>;
   status: ReportStatus;
   narrative: Record<"meetingSummary" | "prayerAndFollowUp" | "observations", string>;
 };

@@ -15,6 +15,11 @@ function formatShortDate(dateIso: string) {
   return `${day}/${month}`;
 }
 
+function formatWeekday(dateIso: string) {
+  const [year, month, day] = dateIso.split("-").map(Number);
+  return new Intl.DateTimeFormat("pt-BR", { weekday: "long" }).format(new Date(year, month - 1, day)).replace(/^./, (letter) => letter.toLocaleUpperCase("pt-BR"));
+}
+
 export default async function SecretariatMeetingLayout({ children, params }: {
   children: React.ReactNode;
   params: Promise<{ meetingId: string }>;
@@ -33,7 +38,7 @@ export default async function SecretariatMeetingLayout({ children, params }: {
         <p>Encontro de {formatLongDate(meeting.dateIso)}</p>
         <h2>{meeting.title}</h2>
         {study ? <span>{study.lessonNumber} · {study.bibleReference}</span> : null}
-        <time dateTime={`${meeting.dateIso}T${meeting.startTime}`}>Terça-feira · {formatShortDate(meeting.dateIso)} · {meeting.startTime}</time>
+        <time dateTime={`${meeting.dateIso}T${meeting.startTime.replace("h", ":")}`}>{formatWeekday(meeting.dateIso)} · {formatShortDate(meeting.dateIso)} · {meeting.startTime}</time>
       </header>
       <MeetingTabs meetingId={meetingId} />
       {children}

@@ -15,6 +15,30 @@ export function SectionLabel({ children, id, level = 2 }: { children: React.Reac
   return <Tag className={styles.sectionLabel} id={id}>{children}</Tag>;
 }
 
+export function SectionBlock({
+  label,
+  id,
+  action,
+  children,
+  className = "",
+}: {
+  label: React.ReactNode;
+  id: string;
+  action?: React.ReactNode;
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <section className={`${styles.sectionBlock} ${className}`.trim()} aria-labelledby={id}>
+      <header className={styles.sectionHeader}>
+        <SectionLabel id={id}>{label}</SectionLabel>
+        {action}
+      </header>
+      <div className={`${styles.sectionContent} portal-section-content`}>{children}</div>
+    </section>
+  );
+}
+
 export function ResponsibilityTags({ label, items }: { label: string; items: readonly string[] }) {
   return (
     <div className={styles.responsibilities}>

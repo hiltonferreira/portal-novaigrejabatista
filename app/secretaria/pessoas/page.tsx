@@ -1,5 +1,5 @@
-import { SecretariatSectionPlaceholder } from "../_components/section-placeholder";
+import { SecretariatPeopleOverview } from "../_components/secretariat-people-overview";
 
 export default function SecretariatPeoplePage() {
-  return <SecretariatSectionPlaceholder title="Pessoas" />;
+  return <SecretariatPeopleOverview />;
 }

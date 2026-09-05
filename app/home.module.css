@@ -76,20 +76,6 @@
   .journeyList { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (min-width: 1024px) {
-  .homeTheme { grid-template-columns: 14rem 1fr; }
-  .homeTheme :global(.sidebar) { padding: 1.75rem 1rem 1.25rem; background: var(--home-surface); border-color: var(--home-border); }
-  .homeTheme :global(.sidebar .brand) { margin: 0 .7rem 2.4rem; }
-  .homeTheme :global(.sidebar .brand strong) { max-width: 10rem; font-size: 1.05rem; font-weight: 600; line-height: 1.05; }
-  .homeTheme :global(.sidebar .brand small) { color: var(--home-muted); font-weight: 600; }
-  .homeTheme :global(.nav-list a) { min-height: 2.75rem; padding: .6rem .7rem; color: var(--home-muted); border-radius: .35rem; font-size: .8rem; font-weight: 500; }
-  .homeTheme :global(.nav-list a:hover), .homeTheme :global(.nav-list a[aria-current="page"]) { color: var(--home-navy); background: var(--home-background); }
-  .homeTheme :global(.nav-list a[aria-current="page"]) { font-weight: 600; }
-  .homeTheme :global(.nav-list a[aria-current="page"]::before) { background: var(--home-orange); }
-  .homeTheme :global(.nav-group) { margin: 1.35rem .7rem .35rem; color: var(--home-muted); font-size: .58rem; font-weight: 600; letter-spacing: .16em; }
-  .homeTheme :global(.person-chip) { padding: 1rem .7rem 0; border-color: var(--home-border); }
-  .homeTheme :global(.person-chip strong) { color: var(--home-navy); font-size: .8rem; font-weight: 600; }
-  .homeTheme :global(.person-chip small) { color: var(--home-muted); font-size: .7rem; font-weight: 400; }
-  .homeTheme :global(.person-chip .nav-icon) { color: var(--home-blue-gray); }
   .homeTheme :global(.page-area main) { padding: 3rem 3.5rem 4.5rem; }
 }
 @media (prefers-reduced-motion: reduce) { .homeTheme *, .homeTheme *::before, .homeTheme *::after { transition: none !important; }.journeyList a:active, .journeyList a:hover .chevron { transform: none; } }

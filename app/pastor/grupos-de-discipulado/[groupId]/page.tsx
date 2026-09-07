@@ -29,10 +29,10 @@ export default async function DiscipleshipGroupPage({ params, searchParams }: { 
       <SectionBlock id="discipleship-network" label="Rede formal">
         <section className={styles.card}><div className={styles.cardTop}><div><ContextTag>Contexto da Rede</ContextTag><h2>{group.networkName}</h2><p>Rede formal vinculada ao responsável pelo Grupo de Discipulado.</p></div></div><div className={styles.meta}><div><span>Células vinculadas</span><strong>{group.networkCells.length} células</strong><div className={styles.chips}>{group.networkCells.map((cell)=><span key={cell}>{cell}</span>)}</div></div><div><span>Responsável</span><strong>{group.leaderName}</strong><small>{group.leaderRole}</small></div><div><span>Participantes</span><strong>{group.participants.length} participantes</strong><small>Líderes e Líderes em Treinamento</small></div></div></section>
       </SectionBlock>
-      <SectionBlock id="discipleship-participants-overview" label="Participantes" action={<Link className={pastoralStyles.sectionTextAction} href={href("participantes")}>Ver participantes</Link>}>
+      <SectionBlock id="discipleship-participants-overview" label="Participantes" action={<Link className={styles.sectionTextAction} href={href("participantes")}>Ver participantes</Link>}>
         <div className={styles.compactPeople}>{group.participants.slice(0,3).map((person)=><div className={styles.personRow} key={person.name}><div><strong>{person.name}</strong><span>{person.cellName}</span></div><StatusTag tone="neutral">{person.role}</StatusTag></div>)}</div>
       </SectionBlock>
-      <SectionBlock id="discipleship-current-study" label="Estudo atual" action={<Link className={pastoralStyles.sectionTextAction} href={href("estudos")}>Ver estudos</Link>}>
+      <SectionBlock id="discipleship-current-study" label="Estudo atual" action={<Link className={styles.sectionTextAction} href={href("estudos")}>Ver estudos</Link>}>
         {currentStudy ? <article className={styles.studyCard}><div><ContextTag>{currentStudy.source}</ContextTag><h2>{currentStudy.title}</h2><p>{currentStudy.source === "Pastoral" ? "Conteúdo recebido da liderança pastoral para aplicação no grupo." : "Conteúdo criado especificamente pelo responsável deste grupo."}</p></div><Link className="action-link secondary" href={href("estudos")}>Abrir estudo</Link></article> : <div className={styles.empty}>Nenhum estudo definido para este grupo.</div>}
       </SectionBlock>
     </>}

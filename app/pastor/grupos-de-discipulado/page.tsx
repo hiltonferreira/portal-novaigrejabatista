@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ContextTag, StatusTag } from "@/components/portal-patterns";
+import { ContextTag, SectionBlock, StatusTag } from "@/components/portal-patterns";
 import { discipleshipGroupsMock } from "@/data/discipleship-groups";
 import pastoralStyles from "../pastor.module.css";
 import styles from "./discipleship-groups.module.css";
@@ -11,8 +11,7 @@ export default function DiscipleshipGroupsPage() {
       <div><p className={styles.eyebrow}>Desenvolvimento de liderança</p><h1>Grupos de Discipulado</h1><p>Acompanhe grupos de Líderes e Líderes em Treinamento vinculados à Rede formal de cada responsável.</p></div>
       <Link className="action-link primary" href="/pastor/grupos-de-discipulado/novo">Criar grupo</Link>
     </header>
-    <section className={styles.section}>
-      <p className={styles.eyebrow}>Grupos ativos</p>
+    <SectionBlock id="discipleship-active-groups" label="Grupos ativos">
       <div className={styles.list}>{discipleshipGroupsMock.map((group) => {
         const currentStudy = group.studies[0];
         return <article className={styles.card} key={group.id}>
@@ -21,6 +20,6 @@ export default function DiscipleshipGroupsPage() {
           <div className={styles.actions}><Link className="action-link secondary" href={`/pastor/grupos-de-discipulado/${group.id}`}>Ver grupo</Link></div>
         </article>;
       })}</div>
-    </section>
+    </SectionBlock>
   </main>;
 }

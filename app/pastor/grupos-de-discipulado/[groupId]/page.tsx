@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ContextTag, StatusTag } from "@/components/portal-patterns";
+import { ContextTag, SectionBlock, StatusTag } from "@/components/portal-patterns";
 import { discipleshipGroupsMock } from "@/data/discipleship-groups";
 import pastoralStyles from "../../pastor.module.css";
 import styles from "../discipleship-groups.module.css";
@@ -26,13 +26,26 @@ export default async function DiscipleshipGroupPage({ params, searchParams }: { 
     </nav>
 
     {active === "visao-geral" && <>
-      <section className={styles.card}><div className={styles.cardTop}><div><ContextTag>Rede formal</ContextTag><h2>{group.networkName}</h2><p>Rede formal vinculada ao responsável pelo Grupo de Discipulado.</p></div></div><div className={styles.meta}><div><span>Células vinculadas</span><strong>{group.networkCells.length} células</strong><div className={styles.chips}>{group.networkCells.map((cell)=><span key={cell}>{cell}</span>)}</div></div><div><span>Responsável</span><strong>{group.leaderName}</strong><small>{group.leaderRole}</small></div><div><span>Participantes</span><strong>{group.participants.length} participantes</strong><small>Líderes e Líderes em Treinamento</small></div></div></section>
-      <section className={styles.section}><div className={styles.sectionTitle}><p className={styles.eyebrow}>Participantes</p><Link href={href("participantes")}>Ver participantes</Link></div><div className={styles.compactPeople}>{group.participants.slice(0,3).map((person)=><div className={styles.personRow} key={person.name}><div><strong>{person.name}</strong><span>{person.cellName}</span></div><StatusTag tone="neutral">{person.role}</StatusTag></div>)}</div></section>
-      <section className={styles.section}><div className={styles.sectionTitle}><p className={styles.eyebrow}>Estudo atual</p><Link href={href("estudos")}>Ver estudos</Link></div>{currentStudy ? <article className={styles.studyCard}><div><ContextTag>{currentStudy.source}</ContextTag><h2>{currentStudy.title}</h2><p>{currentStudy.source === "Pastoral" ? "Conteúdo recebido da liderança pastoral para aplicação no grupo." : "Conteúdo criado especificamente pelo responsável deste grupo."}</p></div><Link className="action-link secondary" href={href("estudos")}>Abrir estudo</Link></article> : <div className={styles.empty}>Nenhum estudo definido para este grupo.</div>}</section>
+      <SectionBlock id="discipleship-network" label="Rede formal">
+        <section className={styles.card}><div className={styles.cardTop}><div><ContextTag>Contexto da Rede</ContextTag><h2>{group.networkName}</h2><p>Rede formal vinculada ao responsável pelo Grupo de Discipulado.</p></div></div><div className={styles.meta}><div><span>Células vinculadas</span><strong>{group.networkCells.length} células</strong><div className={styles.chips}>{group.networkCells.map((cell)=><span key={cell}>{cell}</span>)}</div></div><div><span>Responsável</span><strong>{group.leaderName}</strong><small>{group.leaderRole}</small></div><div><span>Participantes</span><strong>{group.participants.length} participantes</strong><small>Líderes e Líderes em Treinamento</small></div></div></section>
+      </SectionBlock>
+      <SectionBlock id="discipleship-participants-overview" label="Participantes" action={<Link className={pastoralStyles.sectionTextAction} href={href("participantes")}>Ver participantes</Link>}>
+        <div className={styles.compactPeople}>{group.participants.slice(0,3).map((person)=><div className={styles.personRow} key={person.name}><div><strong>{person.name}</strong><span>{person.cellName}</span></div><StatusTag tone="neutral">{person.role}</StatusTag></div>)}</div>
+      </SectionBlock>
+      <SectionBlock id="discipleship-current-study" label="Estudo atual" action={<Link className={pastoralStyles.sectionTextAction} href={href("estudos")}>Ver estudos</Link>}>
+        {currentStudy ? <article className={styles.studyCard}><div><ContextTag>{currentStudy.source}</ContextTag><h2>{currentStudy.title}</h2><p>{currentStudy.source === "Pastoral" ? "Conteúdo recebido da liderança pastoral para aplicação no grupo." : "Conteúdo criado especificamente pelo responsável deste grupo."}</p></div><Link className="action-link secondary" href={href("estudos")}>Abrir estudo</Link></article> : <div className={styles.empty}>Nenhum estudo definido para este grupo.</div>}
+      </SectionBlock>
     </>}
 
-    {active === "participantes" && <section className={styles.section}><div className={styles.sectionTitle}><div><p className={styles.eyebrow}>Participantes</p><h2>Líderes e LT da Rede</h2></div><button className="action-link secondary" type="button">Gerenciar participantes</button></div><div className={styles.compactPeople}>{group.participants.map((person)=><div className={styles.personRow} key={person.name}><div><strong>{person.name}</strong><span>{person.cellName}</span></div><StatusTag tone="neutral">{person.role}</StatusTag></div>)}</div><p className={styles.helper}>O gerenciamento deve considerar somente Líderes e Líderes em Treinamento pertencentes à Rede formal deste responsável.</p></section>}
+    {active === "participantes" && <SectionBlock id="discipleship-participants" label="Participantes" action={<button className="action-link secondary" type="button">Gerenciar participantes</button>}>
+      <div className={styles.sectionIntro}><h2>Líderes e LT da Rede</h2><p>O gerenciamento deve considerar somente Líderes e Líderes em Treinamento pertencentes à Rede formal deste responsável.</p></div>
+      <div className={styles.compactPeople}>{group.participants.map((person)=><div className={styles.personRow} key={person.name}><div><strong>{person.name}</strong><span>{person.cellName}</span></div><StatusTag tone="neutral">{person.role}</StatusTag></div>)}</div>
+    </SectionBlock>}
 
-    {active === "estudos" && <section className={styles.section}><div className={styles.sectionTitle}><div><p className={styles.eyebrow}>Estudos</p><h2>Conteúdo do Grupo de Discipulado</h2></div><button className="action-link primary" type="button">Adicionar estudo</button></div>{currentStudy && <article className={styles.studyCard}><div><ContextTag>{currentStudy.source}</ContextTag><h2>{currentStudy.title}</h2><p>{currentStudy.source === "Pastoral" ? "Conteúdo recebido da liderança pastoral para aplicação no grupo." : "Conteúdo criado especificamente pelo responsável deste grupo."}</p></div><span className={styles.currentLabel}>Estudo atual</span></article>}<div className={styles.studyChoices}><div><strong>Usar estudo pastoral</strong><p>Selecionar um conteúdo disponibilizado pela liderança pastoral.</p></div><div><strong>Criar estudo para este grupo</strong><p>Criar conteúdo específico para o Grupo de Discipulado.</p></div></div></section>}
+    {active === "estudos" && <SectionBlock id="discipleship-studies" label="Estudos" action={<button className="action-link primary" type="button">Adicionar estudo</button>}>
+      <div className={styles.sectionIntro}><h2>Conteúdo do Grupo de Discipulado</h2><p>Utilize um estudo recebido da liderança pastoral ou crie conteúdo específico para este grupo.</p></div>
+      {currentStudy && <article className={styles.studyCard}><div><ContextTag>{currentStudy.source}</ContextTag><h2>{currentStudy.title}</h2><p>{currentStudy.source === "Pastoral" ? "Conteúdo recebido da liderança pastoral para aplicação no grupo." : "Conteúdo criado especificamente pelo responsável deste grupo."}</p></div><span className={styles.currentLabel}>Estudo atual</span></article>}
+      <div className={styles.studyChoices}><div><strong>Usar estudo pastoral</strong><p>Selecionar um conteúdo disponibilizado pela liderança pastoral.</p></div><div><strong>Criar estudo para este grupo</strong><p>Criar conteúdo específico para o Grupo de Discipulado.</p></div></div>
+    </SectionBlock>}
   </main>;
 }

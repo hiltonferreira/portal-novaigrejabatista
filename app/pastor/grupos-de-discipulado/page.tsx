@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { ContextTag, StatusTag } from "@/components/portal-patterns";
 import { discipleshipGroupsMock } from "@/data/discipleship-groups";
+import pastoralStyles from "../pastor.module.css";
 import styles from "./discipleship-groups.module.css";
 
 export default function DiscipleshipGroupsPage() {
-  return <main className={styles.page}>
-    <Link className={styles.back} href="/pastor">← Voltar para Liderança Pastoral</Link>
+  return <main className={`${pastoralStyles.directoryPage} ${styles.page}`}>
+    <Link className={pastoralStyles.backToOverview} href="/pastor">‹ Voltar para Visão Geral</Link>
     <header className={styles.heading}>
       <div><p className={styles.eyebrow}>Desenvolvimento de liderança</p><h1>Grupos de Discipulado</h1><p>Acompanhe grupos de Líderes e Líderes em Treinamento vinculados à Rede formal de cada responsável.</p></div>
       <Link className="action-link primary" href="/pastor/grupos-de-discipulado/novo">Criar grupo</Link>

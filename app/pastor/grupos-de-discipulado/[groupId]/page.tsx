@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ContextTag, StatusTag } from "@/components/portal-patterns";
 import { discipleshipGroupsMock } from "@/data/discipleship-groups";
+import pastoralStyles from "../../pastor.module.css";
 import styles from "../discipleship-groups.module.css";
 
 type GroupSection = "visao-geral" | "participantes" | "estudos";
@@ -15,13 +16,13 @@ export default async function DiscipleshipGroupPage({ params, searchParams }: { 
   const href = (section: GroupSection) => `/pastor/grupos-de-discipulado/${group.id}?secao=${section}`;
   const currentStudy = group.studies[0];
 
-  return <main className={styles.page}>
-    <Link className={styles.back} href="/pastor/grupos-de-discipulado">← Voltar para Grupos de Discipulado</Link>
+  return <main className={`${pastoralStyles.directoryPage} ${styles.page}`}>
+    <Link className={pastoralStyles.backToOverview} href="/pastor/grupos-de-discipulado">‹ Voltar para Grupos de Discipulado</Link>
     <header className={styles.heading}><div><p className={styles.eyebrow}>Grupo de discipulado</p><h1>Grupo de Discipulado</h1><p>{group.networkName} · {group.leaderName} · {group.leaderRole}</p></div><StatusTag tone="progress">{group.status}</StatusTag></header>
-    <nav className={styles.tabs} aria-label="Áreas do Grupo de Discipulado">
-      <Link className={active === "visao-geral" ? styles.activeTab : undefined} href={href("visao-geral")}>Visão Geral</Link>
-      <Link className={active === "participantes" ? styles.activeTab : undefined} href={href("participantes")}>Participantes</Link>
-      <Link className={active === "estudos" ? styles.activeTab : undefined} href={href("estudos")}>Estudos</Link>
+    <nav className={pastoralStyles.cellsViewNavigation} aria-label="Áreas do Grupo de Discipulado">
+      <Link aria-current={active === "visao-geral" ? "page" : undefined} href={href("visao-geral")}>Visão Geral</Link>
+      <Link aria-current={active === "participantes" ? "page" : undefined} href={href("participantes")}>Participantes</Link>
+      <Link aria-current={active === "estudos" ? "page" : undefined} href={href("estudos")}>Estudos</Link>
     </nav>
 
     {active === "visao-geral" && <>

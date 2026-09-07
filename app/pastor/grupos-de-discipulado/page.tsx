@@ -12,11 +12,14 @@ export default function DiscipleshipGroupsPage() {
     </header>
     <section className={styles.section}>
       <p className={styles.eyebrow}>Grupos ativos</p>
-      <div className={styles.list}>{discipleshipGroupsMock.map((group) => <article className={styles.card} key={group.id}>
-        <div className={styles.cardTop}><div><ContextTag>{group.networkName}</ContextTag><h2>{group.name}</h2><p>{group.leaderName} · {group.leaderRole}</p></div><StatusTag tone="progress">{group.status}</StatusTag></div>
-        <div className={styles.meta}><div><span>Rede formal</span><strong>{group.networkCells.join(" + ")}</strong></div><div><span>Participantes</span><strong>{group.participants.length} Líderes / LT</strong></div><div><span>Estudos</span><strong>{group.studies.length} conteúdo em uso</strong></div></div>
-        <div className={styles.actions}><Link className="action-link secondary" href={`/pastor/grupos-de-discipulado/${group.id}`}>Ver grupo</Link></div>
-      </article>)}</div>
+      <div className={styles.list}>{discipleshipGroupsMock.map((group) => {
+        const currentStudy = group.studies[0];
+        return <article className={styles.card} key={group.id}>
+          <div className={styles.cardTop}><div><ContextTag>{group.networkName}</ContextTag><h2>Grupo de Discipulado</h2><p>{group.networkName} · {group.leaderName} · {group.leaderRole}</p></div><StatusTag tone="progress">{group.status}</StatusTag></div>
+          <div className={styles.meta}><div><span>Rede formal</span><strong>{group.networkName}</strong><small>{group.networkCells.length} células vinculadas</small></div><div><span>Participantes</span><strong>{group.participants.length} participantes</strong><small>Líderes e Líderes em Treinamento</small></div><div><span>Estudo atual</span><strong>{currentStudy?.title ?? "Nenhum estudo definido"}</strong>{currentStudy && <small>{currentStudy.source}</small>}</div></div>
+          <div className={styles.actions}><Link className="action-link secondary" href={`/pastor/grupos-de-discipulado/${group.id}`}>Ver grupo</Link></div>
+        </article>;
+      })}</div>
     </section>
   </main>;
 }

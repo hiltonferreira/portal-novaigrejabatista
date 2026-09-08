@@ -27,7 +27,7 @@ function SupervisionPanel({ selection }: { selection: Selection }) {
   const isSupervisor = selection.kind === "supervisor";
 
   return (
-    <aside className={styles.supervisionPanel} aria-live="polite" aria-label={`Contexto de ${person?.name ?? "liderança"}`}>
+    <aside data-pastoral-structure="panel" className={styles.supervisionPanel} aria-live="polite" aria-label={`Contexto de ${person?.name ?? "liderança"}`}>
       <div className={styles.panelIdentity}>
         <h2>{person?.name}</h2>
         <ContextTag>{isSupervisor ? "Supervisor" : "Líder"}</ContextTag>
@@ -80,31 +80,31 @@ export function PastoralSupervisionView({ mode }: { mode: "list" | "structure" }
   if (!groups.length) return <div className={styles.supervisionEmpty}><ContextTag>Estrutura de acompanhamento</ContextTag><p>Nenhuma relação de supervisão está registrada.</p></div>;
 
   return (
-    <div className={`${styles.supervisionWorkspace} ${selection ? styles.supervisionWorkspaceWithPanel : ""}`}>
+    <div data-pastoral-structure="workspace" data-has-panel={selection ? "true" : "false"} className={`${styles.supervisionWorkspace} ${selection ? styles.supervisionWorkspaceWithPanel : ""}`}>
       {mode === "list" ? (
         <div className={styles.supervisionList}>
           {groups.map(({ supervision, supervisor, ledCell, leaders }) => (
-            <button className={styles.supervisionGroup} key={supervision.id} type="button" onClick={() => setSelection({ kind: "supervisor", personId: supervision.supervisorId, supervisionId: supervision.id })} aria-pressed={selection?.kind === "supervisor" && selection.supervisionId === supervision.id}>
-              <span className={styles.supervisorIdentity}><strong>{supervisor?.name}</strong><span>Supervisor</span></span>
-              <span className={styles.supervisionLedCell}><span>Célula que lidera</span><strong>{ledCell?.name}</strong>{ledCell ? <small>{ledCell.weekday[0].toLocaleUpperCase("pt-BR") + ledCell.weekday.slice(1)} · {ledCell.startTime}</small> : null}</span>
-              <span className={styles.supervisedLeaders}><span>Líderes acompanhados</span>{leaders.map(({ person, cell }) => <span className={styles.supervisedLeaderSummary} key={person!.id}><strong>{person?.name}</strong><small>{cell?.name ?? "Célula não registrada"}</small></span>)}</span>
+            <button data-pastoral-structure="group" className={styles.supervisionGroup} key={supervision.id} type="button" onClick={() => setSelection({ kind: "supervisor", personId: supervision.supervisorId, supervisionId: supervision.id })} aria-pressed={selection?.kind === "supervisor" && selection.supervisionId === supervision.id}>
+              <span className={styles.supervisorIdentity}><strong data-pastoral-structure="person-name">{supervisor?.name}</strong><span>Supervisor</span></span>
+              <span className={styles.supervisionLedCell}><span data-structure-label>Célula que lidera</span><strong>{ledCell?.name}</strong>{ledCell ? <small>{ledCell.weekday[0].toLocaleUpperCase("pt-BR") + ledCell.weekday.slice(1)} · {ledCell.startTime}</small> : null}</span>
+              <span data-pastoral-structure="relationship-list" className={styles.supervisedLeaders}><span data-structure-label>Líderes acompanhados</span>{leaders.map(({ person, cell }) => <span data-pastoral-structure="relationship" className={styles.supervisedLeaderSummary} key={person!.id}><strong>{person?.name}</strong><small>{cell?.name ?? "Célula não registrada"}</small></span>)}</span>
             </button>
           ))}
         </div>
       ) : (
         <div className={styles.supervisionStructureArea}>
           <TreeControls label="Controles da estrutura de acompanhamento" onZoomIn={() => setScale((current) => Math.min(1.4, current + .1))} onZoomOut={() => setScale((current) => Math.max(.65, current - .1))} onFit={fitStructure} />
-          <div ref={viewportRef} className={styles.supervisionCanvas} aria-label="Estrutura atual de acompanhamento"
+          <div data-pastoral-structure="canvas" ref={viewportRef} className={styles.supervisionCanvas} aria-label="Estrutura atual de acompanhamento"
             onPointerDown={(event) => { if ((event.target as HTMLElement).closest("button")) return; const viewport = viewportRef.current; if (!viewport) return; dragRef.current = { x: event.clientX, y: event.clientY, left: viewport.scrollLeft, top: viewport.scrollTop }; viewport.setPointerCapture(event.pointerId); }}
             onPointerMove={(event) => { const drag = dragRef.current; const viewport = viewportRef.current; if (!drag || !viewport) return; viewport.scrollLeft = drag.left - (event.clientX - drag.x); viewport.scrollTop = drag.top - (event.clientY - drag.y); }}
             onPointerUp={() => { dragRef.current = null; }} onPointerCancel={() => { dragRef.current = null; }}>
           <div className={styles.supervisionForest} style={{ zoom: scale }}>
             {groups.map(({ supervision, supervisor, ledCell, leaders }) => (
               <section className={`${styles.supervisionTreeGroup}${selection?.kind === "supervisor" && selection.supervisionId === supervision.id ? ` ${styles.supervisionTreeGroupSelected}` : ""}`} key={supervision.id} aria-label={`Acompanhamento de ${supervisor?.name}`}>
-                <button className={styles.supervisorNode} type="button" onClick={() => setSelection({ kind: "supervisor", personId: supervision.supervisorId, supervisionId: supervision.id })} aria-pressed={selection?.kind === "supervisor" && selection.supervisionId === supervision.id}>
+                <button data-pastoral-structure="node" className={styles.supervisorNode} type="button" onClick={() => setSelection({ kind: "supervisor", personId: supervision.supervisorId, supervisionId: supervision.id })} aria-pressed={selection?.kind === "supervisor" && selection.supervisionId === supervision.id}>
                   <span className={styles.supervisionNodeHeader}><strong>{supervisor?.name}</strong><ContextTag>Supervisor</ContextTag></span><span className={styles.supervisionNodeCell}>{ledCell?.name}</span>{ledCell ? <small>{ledCell.weekday[0].toLocaleUpperCase("pt-BR") + ledCell.weekday.slice(1)} · {ledCell.startTime}</small> : null}
                 </button>
-                <ul>{leaders.map(({ person, cell }) => <li key={person!.id}><button className={styles.leaderNode} type="button" onClick={() => setSelection({ kind: "leader", personId: person!.id, supervisionId: supervision.id })} aria-pressed={selection?.kind === "leader" && selection.personId === person!.id}><span className={styles.supervisionNodeHeader}><strong>{person?.name}</strong><ContextTag>Líder</ContextTag></span><span className={styles.supervisionNodeCell}>{cell?.name}</span></button></li>)}</ul>
+                <ul>{leaders.map(({ person, cell }) => <li key={person!.id}><button data-pastoral-structure="node" className={styles.leaderNode} type="button" onClick={() => setSelection({ kind: "leader", personId: person!.id, supervisionId: supervision.id })} aria-pressed={selection?.kind === "leader" && selection.personId === person!.id}><span className={styles.supervisionNodeHeader}><strong>{person?.name}</strong><ContextTag>Líder</ContextTag></span><span className={styles.supervisionNodeCell}>{cell?.name}</span></button></li>)}</ul>
               </section>
             ))}
           </div></div>

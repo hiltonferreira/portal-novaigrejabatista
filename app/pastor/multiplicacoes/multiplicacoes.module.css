@@ -1,0 +1,146 @@
+.page {
+  display: grid;
+  gap: 1.8rem;
+  width: 100%;
+}
+
+.pageIntro {
+  display: flex;
+  width: 100%;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+}
+
+.pageIntro > div {
+  display: grid;
+  gap: .35rem;
+}
+
+.eyebrow {
+  margin: 0;
+  color: #d94f12;
+  font-size: .7rem;
+  font-weight: 600;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+}
+
+.pageIntro h1 {
+  margin: 0;
+  color: #060749;
+  font-size: clamp(1.45rem, 4vw, 1.9rem);
+  font-weight: 600;
+  letter-spacing: -.025em;
+}
+
+.pageIntro p:last-child {
+  max-width: 44rem;
+  margin: 0;
+  color: #626570;
+  font-size: .86rem;
+  line-height: 1.5;
+}
+
+.pageIntro :global(.action-link) {
+  flex: 0 0 auto;
+}
+
+.grid {
+  display: grid;
+  gap: 1rem;
+  width: 100%;
+}
+
+.card {
+  width: 100%;
+}
+
+.cardHeader {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: .65rem 1rem;
+}
+
+.identity {
+  display: grid;
+  gap: .3rem;
+}
+
+.identity h2 {
+  margin: 0;
+  color: #060749;
+  font-size: clamp(1.35rem, 4vw, 1.75rem);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -.025em;
+}
+
+.identity p {
+  max-width: 48rem;
+  margin: 0;
+  color: #626570;
+  font-size: .88rem;
+  line-height: 1.55;
+}
+
+.details {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 1.5rem;
+  margin: .05rem 0 0;
+  border-top: 1px solid #d8d8cf;
+}
+
+.details div {
+  display: grid;
+  gap: .16rem;
+  padding: .62rem 0;
+  border-bottom: 1px solid #d8d8cf;
+}
+
+.details dt {
+  color: #626570;
+  font-size: .66rem;
+  font-weight: 600;
+  letter-spacing: .09em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.details dd {
+  margin: 0;
+  color: #252538;
+  font-size: .86rem;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.details .pendingValue {
+  color: #6f7078;
+  font-weight: 500;
+}
+
+.history {
+  width: 100%;
+}
+
+@media (max-width: 639px) {
+  .pageIntro {
+    display: grid;
+    align-items: start;
+  }
+
+  .pageIntro :global(.action-link) {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .details {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

@@ -1,3 +1,4 @@
+import { EncounterStudy } from "@/components/encounter-study";
 import { ActionLink } from "@/components/portal-shell";
 import { ContextTag, SectionLabel } from "@/components/portal-patterns";
 import { genesisCellMock } from "@/data/cell";
@@ -6,7 +7,6 @@ import styles from "./minha-celula.module.css";
 
 export default function MyCellOverview() {
   const { nextMeeting, currentPerson, serviceAssignments, leadership, birthdays } = genesisCellMock;
-  const { study } = nextMeeting;
   const nextMeetingAssignment = serviceAssignments.find((assignment) =>
     assignment.meetingId === nextMeeting.id && assignment.personName === currentPerson.name,
   );
@@ -17,12 +17,10 @@ export default function MyCellOverview() {
         <div className={styles.primaryGrid}>
           <section className={styles.contextSection} aria-labelledby="meeting-section-title">
             <SectionLabel id="meeting-section-title" level={3}>Agenda da célula</SectionLabel>
-            <article className={`${styles.card} ${styles.meetingCard}`} aria-labelledby="next-meeting-title">
+            <article className={`${styles.card} ${styles.meetingCard}`} aria-labelledby="encounter-study-title">
               <ContextTag>Próximo encontro</ContextTag>
               <p className={styles.metadata}>{nextMeeting.dateLabel}</p>
-              <h3 id="next-meeting-title">{study.title}</h3>
-              <p className={styles.lessonLine}>{study.lessonNumber} · {study.bibleReference}</p>
-              {study.referenceIsDemonstration ? <p className={styles.mockNote}>Referência bíblica demonstrativa</p> : null}
+              <div id="encounter-study-title"><EncounterStudy dateIso={nextMeeting.dateIso} /></div>
               <div className={styles.participation}>
                 <span>Sua participação</span>
                 <strong>{nextMeetingAssignment?.serviceFunction}</strong>

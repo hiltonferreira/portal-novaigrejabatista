@@ -1,3 +1,4 @@
+import { EncounterStudy } from "@/components/encounter-study";
 import { ActionLink } from "@/components/portal-shell";
 import { ContextTag, SectionLabel } from "@/components/portal-patterns";
 import { genesisCellMock } from "@/data/cell";
@@ -5,7 +6,6 @@ import styles from "../minha-celula.module.css";
 
 export default function MeetingsPage() {
   const { nextMeeting, previousMeetings, currentPerson, serviceAssignments } = genesisCellMock;
-  const { study } = nextMeeting;
   const nextMeetingAssignment = serviceAssignments.find((assignment) =>
     assignment.meetingId === nextMeeting.id && assignment.personName === currentPerson.name,
   );
@@ -17,9 +17,7 @@ export default function MeetingsPage() {
         <MeetingCard>
           <ContextTag>Agenda da célula</ContextTag>
           <p className={styles.metadata}>{nextMeeting.dateLabel}</p>
-          <h3 id="encounter-study-title">{study.title}</h3>
-          <p className={styles.lessonLine}>{study.lessonNumber} · {study.bibleReference}</p>
-          {study.referenceIsDemonstration ? <p className={styles.mockNote}>Referência bíblica demonstrativa</p> : null}
+          <div id="encounter-study-title"><EncounterStudy dateIso={nextMeeting.dateIso} /></div>
 
           <div className={styles.participation}>
             <span>Sua participação</span>

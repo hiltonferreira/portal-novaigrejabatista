@@ -1,11 +1,16 @@
+"use client";
+
+import { use } from "react";
+import { useMeeting } from "@/components/demo-provider";
 import { notFound } from "next/navigation";
 import { ActionLink } from "@/components/portal-shell";
 import { ContextTag, SectionLabel, StatusTag } from "@/components/portal-patterns";
-import { getSecretariatMeetingById, secretariatMeetingOverviewMock as overview } from "@/data/secretariat-meetings";
+import { secretariatMeetingOverviewMock as overview } from "@/data/secretariat-meetings";
 import styles from "../../secretaria.module.css";
 
-export default async function SecretariatMeetingPage({ params }: { params: Promise<{ meetingId: string }> }) {
-  const { meetingId } = await params;
+export default function SecretariatMeetingPage({ params }: { params: Promise<{ meetingId: string }> }) {
+  const { meetingId } = use(params);
+  const meeting = useMeeting(meetingId);
   const isNewMeeting = meetingId === "novo";
 
   if (isNewMeeting) {
@@ -18,9 +23,8 @@ export default async function SecretariatMeetingPage({ params }: { params: Promi
     );
   }
 
-  const meeting = getSecretariatMeetingById(meetingId);
   if (!meeting) notFound();
-  const meetingOverview = meeting.id === overview.encounterId ? overview : {
+  const meetingOverview = {
     communication: { status: meeting.statuses.communication ?? { label: "A preparar", tone: "action" as const }, description: overview.communication.description },
     attendance: { status: meeting.statuses.attendance, description: overview.attendance.description },
     report: { status: meeting.statuses.report, description: overview.report.description },

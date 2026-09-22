@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { DemoProvider } from "@/components/demo-provider";
 
 export const metadata: Metadata = {
   title: { default: "Portal Nova Igreja Batista", template: "%s | Nova Igreja Batista" },
@@ -7,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="pt-BR"><body>{children}</body></html>;
+  return <html lang="pt-BR"><body><DemoProvider>{children}</DemoProvider></body></html>;
 }

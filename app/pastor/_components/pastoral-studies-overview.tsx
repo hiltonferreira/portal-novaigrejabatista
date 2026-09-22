@@ -1,9 +1,10 @@
 "use client";
 
+import { useDemo } from "@/components/demo-provider";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ActionButton } from "@/components/portal-shell";
 import { ContextTag, SectionBlock, StatusTag, type StatusTone } from "@/components/portal-patterns";
-import { createPastoralStudyId, createStudyScheduleId, normalizeLessonNumber, pastoralStudiesMock, studySchedulesMock, type PastoralStudy, type StudySchedule } from "@/data/pastoral-studies";
+import { createPastoralStudyId, createStudyScheduleId, normalizeLessonNumber, type PastoralStudy } from "@/data/pastoral-studies";
 import { addCalendarWeeks, formatLocalDateKey, formatStudyWeek, getCalendarWeek, startOfCalendarWeek } from "@/data/temporal-context";
 import styles from "../pastor.module.css";
 
@@ -15,8 +16,7 @@ const studyStatuses: Record<"unscheduled" | "pdfUnavailable", { label: string; t
 };
 
 export function PastoralStudiesOverview() {
-  const [studies, setStudies] = useState<PastoralStudy[]>([...pastoralStudiesMock]);
-  const [schedules, setSchedules] = useState<StudySchedule[]>([...studySchedulesMock]);
+  const { studies, setStudies, schedules, setSchedules, sessionObjectUrls } = useDemo();
   const [formOpen, setFormOpen] = useState(false);
   const [form, setForm] = useState<StudyForm>(emptyForm);
   const [pdf, setPdf] = useState<File | null>(null);
@@ -30,7 +30,7 @@ export function PastoralStudiesOverview() {
   const [editingStudyId, setEditingStudyId] = useState<string | null>(null);
   const [editForm, setEditForm] = useState<StudyForm>(emptyForm);
   const fileRef = useRef<HTMLInputElement>(null);
-  const sessionObjectUrls = useRef(new Set<string>());
+
 
   const quickWeeks = useMemo(() => {
     const currentWeek = formatLocalDateKey(startOfCalendarWeek(new Date()));
@@ -45,10 +45,7 @@ export function PastoralStudiesOverview() {
       return left.index - right.index;
     }), [schedules, studies]);
 
-  useEffect(() => {
-    const urls = sessionObjectUrls.current;
-    return () => urls.forEach((url) => URL.revokeObjectURL(url));
-  }, []);
+
   useEffect(() => {
     if (!successFeedback) return;
     const timer = window.setTimeout(() => setSuccessFeedback(""), 2600);

@@ -68,5 +68,6 @@ export function deriveAttendanceSummary(people: readonly AttendancePerson[], rec
     absent: records.filter((record) => record.state === "absent").length,
     visitors,
     totalPresent: presentPeople.length,
+    unregistered: people.filter(person => !recordByPersonId.has(person.id) || recordByPersonId.get(person.id)?.state === "unregistered").length,
   };
 }

@@ -1,9 +1,12 @@
 "use client";
 
+import { useEncounterOperation, useMeeting } from "@/components/demo-provider";
+import { deriveAttendanceSummary } from "@/data/secretariat-attendance";
+import { getSnackOrganizationByEncounterId, getSnackOrganizationSummary } from "@/data/snack-organization";
 import { useState } from "react";
 import { ActionButton } from "@/components/portal-shell";
 import { ContextTag, SectionLabel, StatusTag } from "@/components/portal-patterns";
-import { reportStatusPresentation, type ReportStatus } from "@/data/secretariat-report";
+import { reportStatusPresentation } from "@/data/secretariat-report";
 import styles from "../../../secretaria.module.css";
 
 type Narrative = {
@@ -18,28 +21,31 @@ const fields: readonly { key: keyof Narrative; label: string; placeholder: strin
   { key: "observations", label: "Observações", placeholder: "Outras informações relevantes.", rows: 3, compact: true },
 ];
 
-export function ReportEditor({ meeting, attendance, gathering, initialReport }: {
-  meeting: { title: string; study: { lessonNumber: string; bibleReference: string } };
-  attendance: { totalPresent: number; absent: number; visitors: readonly { id: string; name: string }[] };
-  gathering: { primary: string; secondary: string };
-  initialReport: { status: ReportStatus; narrative: Narrative };
-}) {
-  const [narrative, setNarrative] = useState<Narrative>({ ...initialReport.narrative });
-  const [status, setStatus] = useState<ReportStatus>(initialReport.status);
+export function ReportEditor({ meetingId }: {meetingId: string}) {
+  const {operation, update} = useEncounterOperation(meetingId);
+  const currentMeeting = useMeeting(meetingId)!;
+  const {narrative, status, snapshot} = operation;
+  const meeting = {title: snapshot?.studyTitle ?? currentMeeting.title, study: currentMeeting.study};
+  const attendance = deriveAttendanceSummary(snapshot?.people ?? operation.people, snapshot?.records ?? operation.records);
+  const snack = getSnackOrganizationByEncounterId(meetingId);
+  const gathering = snack ? getSnackOrganizationSummary(snack) : undefined;
   const [feedback, setFeedback] = useState("");
   const statusPresentation = reportStatusPresentation[status];
 
   function updateField(key: keyof Narrative, value: string) {
-    setNarrative((current) => ({ ...current, [key]: value }));
+    update(current => current.status === "draft" ? {...current, narrative: {...current.narrative, [key]: value}} : current);
     setFeedback("");
   }
 
   function saveDraft() {
-    setFeedback("Rascunho salvo.");
+    setFeedback("Rascunho mantido nesta sessão de demonstração.");
   }
 
   function sendToLeader() {
-    setStatus("sentToLeader");
+    update(current => current.status === "draft" ? {...current, status: "sentToLeader", snapshot: {
+      people: current.people.map(person => ({...person})), records: current.records.map(record => ({...record})),
+      narrative: {...current.narrative}, studyTitle: currentMeeting.study ? `${currentMeeting.title} · ${currentMeeting.study.lessonNumber} · ${currentMeeting.study.bibleReference}` : "Estudo a definir",
+    }} : current);
     setFeedback("Relatório enviado ao Líder.");
   }
 
@@ -49,16 +55,18 @@ export function ReportEditor({ meeting, attendance, gathering, initialReport }: 
       <article className={`${styles.card} ${styles.reportCard}`}>
         <ContextTag>Após o encontro</ContextTag>
         <p className={styles.reportIntro}>Registre as informações do encontro para acompanhamento do Líder.</p>
+        {snapshot ? <p>Este resumo preserva as informações enviadas. Correções após o envio ainda não estão disponíveis nesta demonstração.</p> : null}
 
         <div className={styles.reportLayout}>
           <div className={styles.reportMain}>
             <section className={styles.reportSummary} aria-labelledby="report-summary-title">
               <h3 id="report-summary-title">Resumo do encontro</h3>
               <dl>
-                <div><dt>Estudo</dt><dd><strong>{meeting.title}</strong><span>{meeting.study.lessonNumber} · {meeting.study.bibleReference}</span></dd></div>
-                <div><dt>Presença</dt><dd><strong>{attendance.totalPresent} presentes</strong><span>{attendance.absent} ausentes</span></dd></div>
+                <div><dt>Estudo</dt><dd><strong>{meeting.title}</strong>{!snapshot && meeting.study ? <span>{meeting.study.lessonNumber} · {meeting.study.bibleReference}</span> : null}</dd></div>
+                <div><dt>Presença</dt><dd><strong>{attendance.totalPresent} presentes</strong><span>{attendance.absent} ausentes · {attendance.unregistered} sem registro</span></dd></div>
                 <div><dt>Visitantes</dt><dd>{attendance.visitors.length > 0 ? <><strong>{attendance.visitors.length} {attendance.visitors.length === 1 ? "visitante" : "visitantes"}</strong><span>{attendance.visitors.map((visitor) => visitor.name).join(", ")}</span></> : "Nenhum visitante registrado"}</dd></div>
-                <div><dt>Confraternização</dt><dd><strong>{gathering.primary}</strong><span>{gathering.secondary}</span></dd></div>
+
+                {gathering ? <div><dt>Confraternização</dt><dd><strong>{gathering.primary}</strong><span>{gathering.secondary}</span></dd></div> : null}
               </dl>
             </section>
 
@@ -66,7 +74,7 @@ export function ReportEditor({ meeting, attendance, gathering, initialReport }: 
               {fields.map((field) => (
                 <label key={field.key}>
                   <span>{field.label}</span>
-                  <textarea className={field.compact ? styles.reportTextareaCompact : undefined} rows={field.rows} placeholder={field.placeholder} value={narrative[field.key]} onChange={(event) => updateField(field.key, event.target.value)} />
+                  <textarea className={field.compact ? styles.reportTextareaCompact : undefined} rows={field.rows} placeholder={field.placeholder} readOnly={status !== "draft"} value={narrative[field.key]} onChange={(event) => updateField(field.key, event.target.value)} />
                 </label>
               ))}
             </form>

@@ -45,7 +45,7 @@ Os tokens de marca iniciais são `--navy: #060749`, `--ivory: #EBEBDF` e `--oran
 
 - Adotar Next.js, TypeScript e App Router, com componentes reutilizáveis e CSS baseado em design tokens.
 - Manter o código simples, legível e evolutivo. Evitar abstrações, dependências e infraestrutura antes de haver necessidade real.
-- Usar mocks nesta etapa. Não implementar banco de dados, autenticação real ou integrações externas.
+- A demonstração usa mocks. Em 22/09/2026, o proprietário autorizou avançar para autenticação, persistência e permissões no ambiente de teste. O primeiro recorte está documentado em `docs/19-ACESSO-COMPARTILHADO.md`; não aplicar em produção nem converter regras pendentes em permissões.
 - A entidade central futura será `Pessoa`. Uma Pessoa pode ter simultaneamente múltiplos vínculos, funções e responsabilidades; Membro, Líder, Supervisor e outros papéis nunca devem gerar pessoas duplicadas.
 - Uma Pessoa poderá futuramente possuir uma Conta de acesso, mas `Pessoa` e `Conta` são entidades diferentes.
 - Promoções de vínculo e designações de liderança são decisões humanas, nunca automações implícitas.

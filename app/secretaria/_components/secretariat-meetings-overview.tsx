@@ -1,5 +1,6 @@
 "use client";
 
+import { useDemo, useMeeting } from "@/components/demo-provider";
 import Link from "next/link";
 import { useMemo, useRef, useState } from "react";
 import { ActionButton } from "@/components/portal-shell";
@@ -39,7 +40,7 @@ function dateIdentity(dateIso: string) {
 }
 
 export function SecretariatMeetingsOverview() {
-  const [created, setCreated] = useState<SecretariatMeeting[]>([]);
+  const { created, setCreated } = useDemo();
   const [open, setOpen] = useState(false);
   const allUpcoming = useMemo(() => [...secretariatMeetingsMock.upcoming, ...created].toSorted((a, b) => `${a.dateIso}T${normalizedTime(a.startTime)}`.localeCompare(`${b.dateIso}T${normalizedTime(b.startTime)}`)), [created]);
   const [dateIso, setDateIso] = useState("");
@@ -85,7 +86,8 @@ export function SecretariatMeetingsOverview() {
   </div>;
 }
 
-function MeetingLink({ meeting, communication = false }: { meeting: SecretariatMeeting; communication?: boolean }) {
+function MeetingLink({ meeting: initialMeeting, communication = false }: { meeting: SecretariatMeeting; communication?: boolean }) {
+  const meeting = useMeeting(initialMeeting.id) ?? initialMeeting;
   const date = dateIdentity(meeting.dateIso);
   return <Link className={styles.meetingRow} href={`/secretaria/encontros/${meeting.id}`} aria-label={`${date.day} de ${date.month}: ${meeting.title}`}>
     <time className={styles.meetingDate} dateTime={meeting.dateIso}><strong>{date.day}</strong><span>{date.month}</span></time>

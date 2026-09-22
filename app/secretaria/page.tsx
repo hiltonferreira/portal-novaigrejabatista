@@ -1,3 +1,5 @@
+"use client";
+import { useMeeting } from "@/components/demo-provider";
 import Link from "next/link";
 import { ActionLink } from "@/components/portal-shell";
 import { ContextTag, SectionLabel, StatusTag } from "@/components/portal-patterns";
@@ -7,7 +9,7 @@ import { MeetingTemporalTag } from "./_components/meeting-temporal-tag";
 import styles from "./secretaria.module.css";
 
 export default function SecretariatOverviewPage() {
-  const meeting = overview.nextMeeting;
+  const meeting = useMeeting(overview.nextMeeting.id)!;
 
   return (
     <div className={styles.overview}>
@@ -26,16 +28,16 @@ export default function SecretariatOverviewPage() {
           <SectionLabel id="next-meeting-label">Próximo encontro</SectionLabel>
           <article className={`${styles.card} ${styles.meetingCard}`}>
             <MeetingTemporalTag dateIso={meeting.dateIso} />
-            <h2>{meeting.study.title}</h2>
-            <p className={styles.studyMeta}>{meeting.study.lessonNumber} · {meeting.study.bibleReference}</p>
+            <h2>{meeting.title}</h2>
+            {meeting.study ? <p className={styles.studyMeta}>{meeting.study.lessonNumber} · {meeting.study.bibleReference}</p> : null}
             <p className={styles.meetingTime}>Terça-feira · {formatShortDate(meeting.dateIso)} · {meeting.startTime}</p>
             <dl className={styles.statusList}>
-              {meeting.statuses.map((status) => (
-                <div key={status.label}>
-                  <dt>{status.label}</dt>
-                  <dd><StatusTag tone={status.status.tone}>{status.status.label}</StatusTag></dd>
+              {Object.entries(meeting.statuses).map(([key, status]) => status ? (
+                <div key={key}>
+                  <dt>{{communication: "Comunicação", attendance: "Presença", report: "Relatório"}[key]}</dt>
+                  <dd><StatusTag tone={status.tone}>{status.label}</StatusTag></dd>
                 </div>
-              ))}
+              ) : null)}
             </dl>
             <div className={styles.allMeetingsLink}>
               <ActionLink href="/secretaria/encontros" variant="secondary">Ver todos os encontros</ActionLink>

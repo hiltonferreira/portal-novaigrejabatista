@@ -1,6 +1,9 @@
+"use client";
+
+import { use } from "react";
+import { useMeeting } from "@/components/demo-provider";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getSecretariatMeetingById } from "@/data/secretariat-meetings";
 import { MeetingTabs } from "./_components/meeting-tabs";
 import styles from "../../secretaria.module.css";
 
@@ -20,14 +23,14 @@ function formatWeekday(dateIso: string) {
   return new Intl.DateTimeFormat("pt-BR", { weekday: "long" }).format(new Date(year, month - 1, day)).replace(/^./, (letter) => letter.toLocaleUpperCase("pt-BR"));
 }
 
-export default async function SecretariatMeetingLayout({ children, params }: {
+export default function SecretariatMeetingLayout({ children, params }: {
   children: React.ReactNode;
   params: Promise<{ meetingId: string }>;
 }) {
-  const { meetingId } = await params;
+  const { meetingId } = use(params);
+  const meeting = useMeeting(meetingId);
   if (meetingId === "novo") return children;
 
-  const meeting = getSecretariatMeetingById(meetingId);
   if (!meeting) notFound();
   const study = "study" in meeting ? meeting.study : undefined;
 

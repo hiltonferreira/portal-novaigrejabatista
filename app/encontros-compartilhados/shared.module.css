@@ -1,0 +1,15 @@
+.page { max-width: 780px; margin: auto; padding: 28px 20px 60px; color: #060749; }
+.page h1 { font-size: clamp(1.6rem, 4vw, 2.2rem); }
+.page p { line-height: 1.6; }
+.card { border: 1px solid #c6c9d1; border-radius: 14px; padding: 20px; margin: 24px 0; background: #fff; }
+.form { display: grid; gap: 16px; margin-block: 20px; }
+.form label { display: grid; gap: 8px; font-weight: 600; }
+.form input, .form textarea { padding: 12px; font: inherit; border: 1px solid #767b8b; border-radius: 8px; width: 100%; box-sizing: border-box; }
+.form textarea { min-height: 120px; }
+.page button { padding: 12px 20px; min-height: 44px; border: 1px solid #060749; border-radius: 999px; color: #060749; background: #EBEBDF; cursor: pointer; font: inherit; font-weight: 600; }
+.form button { background: #FF7F40; border-color: #FF7F40; }
+.page :focus-visible { outline: 3px solid #060749; outline-offset: 3px; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.text { white-space: pre-wrap; overflow-wrap: anywhere; }
+.form button[value="draft"] { background: #EBEBDF; border-color: #060749; }
+.page button:disabled { opacity: .65; cursor: wait; }

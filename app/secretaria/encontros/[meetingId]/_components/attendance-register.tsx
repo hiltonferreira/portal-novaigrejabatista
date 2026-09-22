@@ -1,5 +1,6 @@
 "use client";
 
+import { useEncounterOperation } from "@/components/demo-provider";
 import { FormEvent, useMemo, useState } from "react";
 import { ActionButton } from "@/components/portal-shell";
 import { ContextTag, SectionLabel } from "@/components/portal-patterns";
@@ -18,12 +19,11 @@ function personDescription(person: AttendancePerson) {
   return person.cellRoles.length > 0 ? person.cellRoles.join(" · ") : person.churchRelationshipLabel;
 }
 
-export function AttendanceRegister({ initialPeople, initialRecords }: {
-  initialPeople: readonly AttendancePerson[];
-  initialRecords: readonly EncounterAttendance[];
-}) {
-  const [people, setPeople] = useState<AttendancePerson[]>([...initialPeople]);
-  const [records, setRecords] = useState<EncounterAttendance[]>([...initialRecords]);
+export function AttendanceRegister({ meetingId }: { meetingId: string }) {
+  const {operation, update} = useEncounterOperation(meetingId);
+  const {people, records} = operation;
+  const setPeople = (change: (current: AttendancePerson[]) => AttendancePerson[]) => update(current => ({...current, people: change(current.people), attendanceSaved: false}));
+  const setRecords = (change: (current: EncounterAttendance[]) => EncounterAttendance[]) => update(current => ({...current, records: change(current.records), attendanceSaved: false}));
   const [showVisitorForm, setShowVisitorForm] = useState(false);
   const [visitorName, setVisitorName] = useState("");
   const [visitorWhatsapp, setVisitorWhatsapp] = useState("");
@@ -235,7 +235,7 @@ export function AttendanceRegister({ initialPeople, initialRecords }: {
         </ul>
 
         <div className={styles.attendanceSave}>
-          <ActionButton type="button" variant="primary" onClick={() => setFeedback("Presença salva.")}>Salvar presença</ActionButton>
+          <ActionButton type="button" variant="primary" onClick={() => { update(current => ({...current, attendanceSaved: true})); setFeedback("Presença salva nesta sessão de demonstração."); }}>Salvar presença</ActionButton>
           <p role="status" aria-live="polite">{feedback}</p>
         </div>
       </article>

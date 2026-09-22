@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { useMeeting } from "@/components/demo-provider";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { ActionButton } from "@/components/portal-shell";
 import { ContextTag, SectionLabel, StatusTag } from "@/components/portal-patterns";
 import styles from "../../../secretaria.module.css";
@@ -66,21 +67,20 @@ function buildCommunication(meeting: Meeting, communication: Communication, serv
   ].join("\n");
 }
 
-export function CommunicationEditor({ meeting, communication, serviceAssignments }: {
+export function CommunicationEditor({ meeting: initialMeeting, communication, serviceAssignments }: {
   meeting: Meeting;
   communication: Communication;
   serviceAssignments: readonly ServiceAssignmentGroup[];
 }) {
+  const resolved = useMeeting(initialMeeting.id)!;
+  const meeting = {...resolved, study: resolved.study ?? {lessonNumber: "", bibleReference: "Aguardando programação oficial"}};
   const origin = useSyncExternalStore(subscribeToOrigin, getOrigin, getServerOrigin);
   const [includeFullSchedule, setIncludeFullSchedule] = useState(false);
   const [manualText, setManualText] = useState<string | null>(null);
   const [copyState, setCopyState] = useState<"idle" | "success" | "error">("idle");
   const feedbackTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hasSchedule = serviceAssignments.length > 0;
-  const suggestedText = useMemo(
-    () => buildCommunication(meeting, communication, serviceAssignments, hasSchedule && includeFullSchedule, origin),
-    [communication, hasSchedule, includeFullSchedule, meeting, origin, serviceAssignments],
-  );
+  const suggestedText = buildCommunication(meeting, communication, serviceAssignments, hasSchedule && includeFullSchedule, origin);
   const preview = manualText ?? suggestedText;
 
   useEffect(() => () => {

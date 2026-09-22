@@ -1,3 +1,4 @@
+import { EncounterStudy } from "@/components/encounter-study";
 import { ActionLink, PortalShell } from "@/components/portal-shell";
 import { ContextHeader } from "@/components/context-header";
 import { PageTitle } from "@/components/page-title";
@@ -54,8 +55,7 @@ export default function Home() {
           <article className={`${styles.card} ${styles.informationCard}`} aria-labelledby="proximo-encontro">
             <ContextTag>Próximo encontro</ContextTag>
             <p className={styles.metadata}>Terça-feira · 08/09 · 19h40</p>
-            <h3 id="proximo-encontro">Lição 13</h3>
-            <p className={styles.lessonTitle}>Uma vida guiada pelo Espírito</p>
+            <div id="proximo-encontro"><EncounterStudy dateIso="2026-09-08" /></div>
             <dl className={styles.assignment}><div><dt>Sua participação</dt><dd>Boas-vindas e Avisos</dd></div></dl>
             <ActionLink href="/minha-celula" variant="secondary">Ver encontro</ActionLink>
           </article>

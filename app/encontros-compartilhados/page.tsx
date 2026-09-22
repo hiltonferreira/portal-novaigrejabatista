@@ -15,13 +15,23 @@ export default async function SharedEncounters({ searchParams }: { searchParams:
   const { data: { user } } = await client.auth.getUser();
   if (!user) redirect("/acesso");
   const { estado } = await searchParams;
-  const [encounters, assignments, reports, cells] = await Promise.all([
+  const loadSharedData = () => Promise.all([
     client.from("portal_encounters").select("id,cell_id,occurs_on,location,announcement,version").order("occurs_on", { ascending: false }),
     client.from("portal_assignments").select("cell_id,responsibility"),
     client.from("portal_reports").select("encounter_id,narrative,status,version"),
     client.from("portal_cells").select("id,name"),
   ]);
+  let [encounters, assignments, reports, cells] = await loadSharedData();
+  if ([encounters, assignments, reports, cells].some(result => result.status === 401)) {
+    [encounters, assignments, reports, cells] = await loadSharedData();
+  }
   const failed = [encounters,assignments,reports,cells].some(result => result.error);
+  if (failed) {
+    console.error("[shared-encounters] data load failed", [encounters, assignments, reports, cells].map(result => ({
+      status: result.status,
+      code: result.error?.code,
+    })));
+  }
   return <main className={styles.page}>
     <p>Nova Igreja Batista · ambiente de teste</p><h1>Meus encontros</h1><p>Conta: {user.email}</p>
     <div className={styles.actions}><RefreshButton /><form action={signOut}><SubmitButton>Sair</SubmitButton></form></div>

@@ -39,3 +39,11 @@ Depois: contextualizar datas/resumos, integrar os fluxos restantes de preparaç�
 - Verificação: cinco testes passaram, incluindo migration e permissões em PostgreSQL embarcado; lint e build verificados. Testes remotos com Supabase Auth e navegadores separados pendentes.
 - Bloqueio: conexão Vercel respondeu 403 por falta de acesso à equipe; nenhum projeto Supabase/credencial de teste disponível. Não aplicado schema remoto nem configuradas variáveis.
 - Nenhuma alteração de produção ou merge. Ativar somente Preview após recuperar acesso e configurar banco de teste.
+
+## 22/09/2026 — presença compartilhada preparada em branch isolada
+
+- `feat/presenca-compartilhada`, baseada na branch de Preview `feat/fluxo-encontro-integrado`: presença por pessoa e encontro em PostgreSQL, incluindo estado explícito sem registro.
+- Secretaria vê e altera somente o rol da própria célula; a edição encerra no envio do relatório. O Líder recebe apenas totais congelados do envio, sem lista de nomes; Membro não consulta presença.
+- Migration aditiva `202609220002_attendance.sql`, com RPCs de leitura/escrita autorizadas, controle de versão, bloqueio concorrente e auditoria.
+- Validação local: seis testes passaram, incluindo permissões e snapshots no PostgreSQL embarcado; lint, TypeScript e build concluídos. A migration 002 e o teste multiusuário desta etapa ainda precisam ser executados no banco/Preview de teste.
+- Nenhuma publicação na branch `main` ou no endereço de produção.

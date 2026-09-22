@@ -14,7 +14,15 @@ export async function changeEncounter(form: FormData) {
   const action = form.get("operation");
   if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(encounter) || !Number.isSafeInteger(version) || version < 0) redirect("/encontros-compartilhados?estado=erro");
   let result;
-  if (action === "encounter") {
+  if (action === "attendance") {
+    const person = form.get("person");
+    const state = form.get("attendance_state");
+    if (typeof person !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(person)
+      || (state !== "present" && state !== "absent" && state !== "unregistered")) redirect("/encontros-compartilhados?estado=erro");
+    result = await client.rpc("portal_save_attendance", {
+      encounter, person, expected_version: version, new_state: state === "unregistered" ? null : state,
+    });
+  } else if (action === "encounter") {
     const location = String(form.get("location") ?? "").trim();
     const announcement = String(form.get("announcement") ?? "").trim();
     if (location.length > 300 || announcement.length > 2000) redirect("/encontros-compartilhados?estado=erro");

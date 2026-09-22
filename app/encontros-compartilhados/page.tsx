@@ -9,19 +9,25 @@ import { changeEncounter } from "./actions";
 import styles from "./shared.module.css";
 export const dynamic = "force-dynamic";
 const statusLabels: Record<string,string> = { draft: "Rascunho", sentToLeader: "Enviado ao Líder", viewedByLeader: "Visualizado pelo Líder" };
+type AttendanceEntry = { person_id: string; person_name: string; attendance_state: string | null };
 export default async function SharedEncounters({ searchParams }: { searchParams: Promise<{ estado?: string }> }) {
   if (!sharedAccessConfigured()) redirect("/acesso");
   const client = await database();
   const { data: { user } } = await client.auth.getUser();
   if (!user) redirect("/acesso");
   const { estado } = await searchParams;
-  const encounters = await client.from("portal_encounters").select("id,cell_id,occurs_on,location,announcement,version").order("occurs_on", { ascending: false });
+  const encounters = await client.from("portal_encounters").select("id,cell_id,occurs_on,location,announcement,version,attendance_version").order("occurs_on", { ascending: false });
   const assignments = await client.from("portal_assignments").select("cell_id,responsibility");
-  const reports = await client.from("portal_reports").select("encounter_id,narrative,status,version");
+  const reports = await client.from("portal_reports").select("encounter_id,narrative,status,version,present_count,absent_count,unregistered_count");
   const cells = await client.from("portal_cells").select("id,name");
-  const failed = [encounters,assignments,reports,cells].some(result => result.error);
+  const secretaryEncounters = encounters.data?.filter(meeting => assignments.data?.some(a => a.cell_id === meeting.cell_id && a.responsibility === "secretary")) ?? [];
+  const rosterResults = await Promise.all(secretaryEncounters.map(async meeting => ({
+    encounterId: meeting.id, response: await client.rpc("portal_attendance_roster", { encounter: meeting.id }),
+  })));
+  const rosters = new Map(rosterResults.map(({ encounterId, response }) => [encounterId, (response.data ?? []) as AttendanceEntry[]]));
+  const failed = [encounters,assignments,reports,cells,...rosterResults.map(result => result.response)].some(result => result.error);
   if (failed) {
-    console.error("[shared-encounters] data load failed", [encounters, assignments, reports, cells].map(result => ({
+    console.error("[shared-encounters] data load failed", [encounters, assignments, reports, cells,...rosterResults.map(result => result.response)].map(result => ({
       status: result.status,
       code: result.error?.code,
     })));
@@ -50,7 +56,28 @@ export default async function SharedEncounters({ searchParams }: { searchParams:
           <p>Estas informações ficam visíveis aos participantes da célula. Use o relatório para registros internos.</p>
           <SubmitButton name="operation" value="encounter">Salvar informações do encontro</SubmitButton>
         </form>}
+        {secretary && <div className={styles.attendance}>
+          <h3>Presença da célula</h3>
+          <p>Registre cada pessoa vinculada à célula. Sem registro não significa ausência. A lista fica reservada à Secretaria; o Líder receberá apenas os totais no relatório.</p>
+          {!rosters.get(meeting.id)?.length && <p>Nenhuma pessoa vinculada a esta célula.</p>}
+          {rosters.get(meeting.id)?.map(person => <form action={changeEncounter} className={styles.attendanceRow} key={`${meeting.id}-${person.person_id}-${meeting.attendance_version}`}>
+            <input type="hidden" name="encounter" value={meeting.id}/>
+            <input type="hidden" name="person" value={person.person_id}/>
+            <input type="hidden" name="version" value={meeting.attendance_version}/>
+            <label>{person.person_name}
+              <select name="attendance_state" defaultValue={person.attendance_state ?? "unregistered"} disabled={Boolean(report && report.status !== "draft")}>
+                <option value="unregistered">Não registrado</option>
+                <option value="present">Presente</option>
+                <option value="absent">Ausente</option>
+              </select>
+            </label>
+            {(!report || report.status === "draft") && <SubmitButton name="operation" value="attendance">Salvar presença</SubmitButton>}
+          </form>)}
+          {report && report.status !== "draft" && <p>Presenças encerradas com o envio do relatório.</p>}
+        </div>}
         {(secretary || (leader && report)) && <><h3>Relatório reservado</h3><p>{statusLabels[report?.status ?? "draft"]}</p>
+          {report?.status !== "draft" && report?.present_count != null && <p>Presença no envio: {report.present_count} presente(s), {report.absent_count} ausente(s), {report.unregistered_count} sem registro.</p>}
+          {report?.status !== "draft" && report?.present_count == null && report && <p>Relatório anterior ao registro de presença: totais indisponíveis.</p>}
           {secretary && (!report || report.status === "draft") ? <form action={changeEncounter} className={styles.form} key={`report-${report?.version ?? 0}`}>
             <input type="hidden" name="encounter" value={meeting.id}/><input type="hidden" name="version" value={report?.version ?? 0}/>
             <label>Registro do encontro<textarea name="narrative" defaultValue={report?.narrative ?? ""} maxLength={10000}/></label>

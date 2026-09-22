@@ -13,3 +13,7 @@
 .text { white-space: pre-wrap; overflow-wrap: anywhere; }
 .form button[value="draft"] { background: #EBEBDF; border-color: #060749; }
 .page button:disabled { opacity: .65; cursor: wait; }
+.attendance { border-top: 1px solid #c6c9d1; padding-top: 12px; margin-top: 24px; }
+.attendanceRow { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; justify-content: space-between; border-bottom: 1px solid #dfe0e4; padding: 12px 0; }
+.attendanceRow label { display: grid; gap: 8px; flex: 1 1 180px; font-weight: 600; }
+.attendanceRow select { padding: 12px; min-height: 44px; font: inherit; border: 1px solid #767b8b; border-radius: 8px; background: white; color: #060749; }

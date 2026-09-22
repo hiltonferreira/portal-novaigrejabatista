@@ -1,6 +1,6 @@
 # Modelo de Domínio Conceitual
 
-`[DECISÃO DE PRODUTO]` Este inventário orienta futura modelagem. Não é schema definitivo de banco e não autoriza migrations nesta etapa.
+`[DECISÃO DE PRODUTO]` Este inventário orienta futura modelagem. Não é schema definitivo de banco. A autorização posterior de 22/09/2026 permite o primeiro schema de teste descrito em `19-ACESSO-COMPARTILHADO.md`.
 
 ## Pessoa e acesso
 

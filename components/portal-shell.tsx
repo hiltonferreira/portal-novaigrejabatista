@@ -46,7 +46,7 @@ export function PortalShell({ children, currentPath = "/", className = "" }: { c
         <header className="mobile-header">
           <Link className="brand" href="/"><strong>Nova Igreja Batista</strong></Link>
         </header>
-        <main id="conteudo" tabIndex={-1}><p className="demo-notice">Ambiente demonstrativo · alterações mantidas durante a navegação e reiniciadas ao recarregar.</p>{children}</main>
+        <main id="conteudo" tabIndex={-1}><p className="demo-notice">Ambiente demonstrativo · alterações mantidas durante a navegação e reiniciadas ao recarregar. <Link href="/acesso">Acesso compartilhado de teste</Link></p>{children}</main>
       </div>
       <nav className="bottom-nav" aria-label="Navegação móvel">
         <Link href="/" aria-current={currentPath === "/" ? "page" : undefined}><NavIcon name="home" />Início</Link>

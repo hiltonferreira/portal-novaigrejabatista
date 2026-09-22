@@ -27,3 +27,15 @@ Verificação visual não concluída: agent-browser não iniciou e o download do
 Revisar a prévia da branch na Vercel e executar o roteiro em `18-FLUXO-DEMONSTRATIVO-ENCONTRO.md`, incluindo celular. Não houve autorização para produção. Não mesclar automaticamente.
 
 Depois: contextualizar datas/resumos, integrar os fluxos restantes de preparação e definir a passagem para persistência, autenticação e autorização real. Regras pendentes da igreja continuam em `DECISOES-PENDENTES.md`.
+
+
+## 22/09/2026 — primeiro recorte persistente preparado
+
+- Implementados `/acesso` e `/encontros-compartilhados`, com Supabase Auth, cookies renováveis e consultas autenticadas no servidor.
+- Migration de Pessoas/Contas/atribuições/células/encontros/relatórios/auditoria com RLS, escritas por RPC, isolamento por célula e controle de versão.
+- Secretaria altera local/comunicado; Membro consulta; relatório rascunho → enviado → visualizado, com leitura exclusiva da Secretaria e Líder correspondente.
+- Script de preparação de dados fictícios e roteiro multiusuário em `19-ACESSO-COMPARTILHADO.md`.
+- Não migra presença, estudos/PDF, lanche, escalas e demais telas; essas áreas continuam demonstrativas.
+- Verificação: cinco testes passaram, incluindo migration e permissões em PostgreSQL embarcado; lint e build verificados. Testes remotos com Supabase Auth e navegadores separados pendentes.
+- Bloqueio: conexão Vercel respondeu 403 por falta de acesso à equipe; nenhum projeto Supabase/credencial de teste disponível. Não aplicado schema remoto nem configuradas variáveis.
+- Nenhuma alteração de produção ou merge. Ativar somente Preview após recuperar acesso e configurar banco de teste.

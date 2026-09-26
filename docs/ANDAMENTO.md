@@ -1,5 +1,13 @@
 # Andamento do desenvolvimento
 
+## 26/09/2026 — simplificação visual da Secretaria em branch de teste
+
+- Na branch `feat/secretaria-encontro-simplificado`, a lista da Secretaria apresenta um único estado de destaque por encontro; detalhes e demais estados permanecem nas telas do encontro.
+- A Visão Geral do encontro apresenta uma ação em destaque, resumo das etapas e referências discretas a lanche/escala, mantendo Comunicação, Presença e Relatório em suas abas.
+- Datas de encontros demonstrativos vencidos passam à seção de encontros anteriores; a lista de próximos encontros mostra estado vazio quando pertinente.
+- São alterações de apresentação e classificação temporal da demonstração. Não concedem novas permissões nem integram as telas demonstrativas ao banco; a validação multiusuário autenticada segue pendente.
+- Verificação local: seis testes, lint, TypeScript e build concluídos. O navegador disponível nesta sessão não acessou o servidor local, portanto ainda falta revisão visual efetiva do novo Preview.
+
 ## Etapa: fluxo demonstrativo de encontro
 
 Branch: `feat/fluxo-encontro-integrado`.
@@ -47,3 +55,10 @@ Depois: contextualizar datas/resumos, integrar os fluxos restantes de preparaç�
 - Migration aditiva `202609220002_attendance.sql`, com RPCs de leitura/escrita autorizadas, controle de versão, bloqueio concorrente e auditoria.
 - Validação local: seis testes passaram, incluindo permissões e snapshots no PostgreSQL embarcado; lint, TypeScript e build concluídos. A migration 002 e o teste multiusuário desta etapa ainda precisam ser executados no banco/Preview de teste.
 - Nenhuma publicação na branch `main` ou no endereço de produção.
+
+## 23/09/2026 — ativação do banco de teste
+
+- Aplicada a migration 002 no projeto Supabase `portal-novaigrejabatista-preview` da organização de testes. Consulta no SQL Editor confirmou tabela/coluna novas, acesso à RPC pelo papel `authenticated` e ausência de `SELECT` direto em `portal_attendance`.
+- Configuradas as três variáveis de conexão da Vercel apenas para `feat/presenca-compartilhada` em Preview. As configurações da branch original e da produção não foram alteradas.
+- O redeploy da branch ficou **Ready** no painel da Vercel; o Preview `portal-novaigrejabatista-li72pj9h0.vercel.app` passou a exibir `/acesso` com e-mail e senha. A prévia anterior estava sem configuração.
+- Pendente: login e roteiro multiusuário no navegador. Não afirmar que o teste remoto passou até observar as contas Secretaria, Membro e Líder na nova prévia.

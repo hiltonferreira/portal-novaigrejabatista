@@ -4,102 +4,52 @@ import { use } from "react";
 import { useMeeting } from "@/components/demo-provider";
 import { notFound } from "next/navigation";
 import { ActionLink } from "@/components/portal-shell";
-import { ContextTag, SectionLabel, StatusTag } from "@/components/portal-patterns";
-import { secretariatMeetingOverviewMock as overview } from "@/data/secretariat-meetings";
+import { SectionLabel, StatusTag } from "@/components/portal-patterns";
 import styles from "../../secretaria.module.css";
+
+const tasks = [
+  { key: "communication", title: "Preparar comunicação", href: "comunicacao", description: "Organize as informações para a célula." },
+  { key: "attendance", title: "Registrar presença", href: "presenca", description: "Registre participantes e visitantes deste encontro." },
+  { key: "report", title: "Preencher relatório", href: "relatorio", description: "Registre as informações para acompanhamento do Líder." },
+] as const;
 
 export default function SecretariatMeetingPage({ params }: { params: Promise<{ meetingId: string }> }) {
   const { meetingId } = use(params);
   const meeting = useMeeting(meetingId);
-  const isNewMeeting = meetingId === "novo";
-
-  if (isNewMeeting) {
-    return (
-      <section className={styles.placeholder} aria-labelledby="meeting-placeholder-title">
-        <SectionLabel id="meeting-placeholder-title">Novo encontro</SectionLabel>
-        <p>A criação de encontros será detalhada em uma próxima etapa.</p>
-        <ActionLink href="/secretaria/encontros" variant="text">Voltar para encontros</ActionLink>
-      </section>
-    );
-  }
-
   if (!meeting) notFound();
-  const meetingOverview = {
-    communication: { status: meeting.statuses.communication ?? { label: "A preparar", tone: "action" as const }, description: overview.communication.description },
-    attendance: { status: meeting.statuses.attendance, description: overview.attendance.description },
-    report: { status: meeting.statuses.report, description: overview.report.description },
-  };
-  const study = "study" in meeting ? meeting.study : undefined;
 
-  return (
-    <div className={styles.meetingDetailOverview}>
-      <section aria-labelledby="preparation-label">
-        <SectionLabel id="preparation-label">Preparação do encontro</SectionLabel>
-        <article className={`${styles.card} ${styles.preparationCard}`}>
-          <ContextTag>Antes do encontro</ContextTag>
-          <div className={styles.communicationBlock}>
-            <div className={styles.operationHeading}>
-              <h3>Comunicação</h3>
-              <StatusTag tone={meetingOverview.communication.status.tone}>{meetingOverview.communication.status.label}</StatusTag>
-            </div>
-            <p>{meetingOverview.communication.description}</p>
-            <ActionLink href={`/secretaria/encontros/${meetingId}/comunicacao`} variant="primary">Preparar comunicação</ActionLink>
-          </div>
-          <dl className={styles.preparationContext}>
-            <div>
-              <dt>Estudo</dt>
-              <dd><strong>{meeting.title}</strong>{study ? <span>{study.lessonNumber} · {study.bibleReference}</span> : null}</dd>
-            </div>
-            <div>
-              <dt>Lanche</dt>
-              <dd><ActionLink href="/secretaria/lanche" variant="text">Ver organização do lanche</ActionLink></dd>
-            </div>
-            <div>
-              <dt>Escala</dt>
-              <dd><ActionLink href="/minha-celula/escalas" variant="text">Ver escala do encontro</ActionLink></dd>
-            </div>
-          </dl>
-        </article>
-      </section>
+  const current = tasks.find(task => {
+    const status = meeting.statuses[task.key];
+    return status?.tone === "action" || status?.tone === "progress";
+  });
 
-      <section aria-labelledby="registration-label">
-        <SectionLabel id="registration-label">Registro do encontro</SectionLabel>
-        <article className={`${styles.card} ${styles.registrationCard}`}>
-          <ContextTag>Após o encontro</ContextTag>
-          <div className={styles.registrationGrid}>
-            <OperationBlock
-              title="Presença"
-              status={meetingOverview.attendance.status}
-              description={meetingOverview.attendance.description}
-              action="Registrar presença"
-              href={`/secretaria/encontros/${meetingId}/presenca`}
-            />
-            <OperationBlock
-              title="Relatório"
-              status={meetingOverview.report.status}
-              description={meetingOverview.report.description}
-              action="Preencher relatório"
-              href={`/secretaria/encontros/${meetingId}/relatorio`}
-            />
-          </div>
-        </article>
-      </section>
-    </div>
-  );
-}
-
-function OperationBlock({ title, status, description, action, href }: {
-  title: string;
-  status: { label: string; tone: "neutral" | "action" | "progress" | "success" };
-  description: string;
-  action: string;
-  href: string;
-}) {
-  return (
-    <div className={styles.operationBlock}>
-      <div className={styles.operationHeading}><h3>{title}</h3><StatusTag tone={status.tone}>{status.label}</StatusTag></div>
-      <p>{description}</p>
-      <ActionLink href={href} variant="secondary">{action}</ActionLink>
-    </div>
-  );
+  return <div className={styles.meetingFocus}>
+    <section aria-labelledby="meeting-focus-title">
+      <SectionLabel id="meeting-focus-title">Em destaque neste encontro</SectionLabel>
+      <article className={`${styles.card} ${styles.meetingFocusCard}`}>
+        {current ? <>
+          <h3>{current.title}</h3>
+          <p>{current.description}</p>
+          <ActionLink href={`/secretaria/encontros/${meetingId}/${current.href}`}>Continuar</ActionLink>
+        </> : <>
+          <h3>Consulte os registros deste encontro</h3>
+          <p>As seções acima reúnem comunicação, presença e relatório.</p>
+        </>}
+      </article>
+    </section>
+    <section aria-labelledby="meeting-steps-title" className={styles.meetingSteps}>
+      <SectionLabel id="meeting-steps-title">Etapas do encontro</SectionLabel>
+      <ul>{tasks.map(task => {
+        const status = meeting.statuses[task.key];
+        return <li key={task.key}>
+          <span>{task.title}</span>
+          {status ? <StatusTag tone={status.tone}>{status.label}</StatusTag> : null}
+        </li>;
+      })}</ul>
+    </section>
+    <nav className={styles.meetingRelated} aria-label="Outras informações do encontro">
+      <ActionLink href="/secretaria/lanche" variant="text">Organização do lanche</ActionLink>
+      <ActionLink href="/minha-celula/escalas" variant="text">Escala de serviço</ActionLink>
+    </nav>
+  </div>;
 }

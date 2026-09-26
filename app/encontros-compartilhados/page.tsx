@@ -33,9 +33,8 @@ export default async function SharedEncounters({ searchParams }: { searchParams:
     })));
   }
   return <main className={styles.page}>
-    <p>Nova Igreja Batista · ambiente de teste</p><h1>Meus encontros</h1><p>Conta: {user.email}</p>
-    <div className={styles.actions}><RefreshButton /><form action={signOut}><SubmitButton>Sair</SubmitButton></form></div>
-    <p>As alterações salvas são compartilhadas com as contas autorizadas. Atualize a página para consultar mudanças feitas por outra pessoa.</p>
+    <header className={styles.header}><div><p className={styles.eyebrow}>Nova Igreja Batista · ambiente de teste</p><h1>Meus encontros</h1><p className={styles.intro}>Acompanhe os encontros das células às quais você está vinculado.</p></div><div className={styles.account}><span>Conta de teste</span><strong>{user.email}</strong><div className={styles.actions}><RefreshButton /><form action={signOut}><SubmitButton>Sair</SubmitButton></form></div></div></header>
+    <p className={styles.notice}>As alterações salvas são compartilhadas com as contas autorizadas. Atualize a página para consultar mudanças feitas por outra pessoa.</p>
     {estado === "salvo" && <p role="status">Alteração salva.</p>}
     {estado === "conflito" && <p role="alert">Outra pessoa atualizou este registro. Confira a versão atual antes de editar novamente.</p>}
     {(estado === "erro" || failed) && <p role="alert">Não foi possível concluir a operação. Tente novamente; se persistir, informe o responsável pelo ambiente de teste.</p>}
@@ -46,17 +45,18 @@ export default async function SharedEncounters({ searchParams }: { searchParams:
       const leader = roles.includes("leader");
       const report = reports.data?.find(r => r.encounter_id === meeting.id);
       const cell = cells.data?.find(c => c.id === meeting.cell_id);
-      return <section key={meeting.id} className={styles.card}>
-        <h2>{cell?.name} · {meeting.occurs_on.split("-").reverse().join("/")}</h2>
-        <p><strong>Local:</strong> {meeting.location || "A informar"}</p><p className={styles.text}>{meeting.announcement || "Nenhum comunicado publicado."}</p>
-        {secretary && <form action={changeEncounter} className={styles.form} key={`meeting-${meeting.version}`}>
+      return <section key={meeting.id} className={styles.card} aria-labelledby={`meeting-${meeting.id}`}>
+        <div className={styles.meetingHeading}><div><p className={styles.eyebrow}>Encontro da célula</p><h2 id={`meeting-${meeting.id}`}>{cell?.name} · {meeting.occurs_on.split("-").reverse().join("/")}</h2></div>{secretary || leader ? <span className={styles.role}>{secretary ? "Secretaria" : "Líder"}</span> : null}</div>
+        <div className={styles.meetingInfo}><p><strong>Local</strong><span>{meeting.location || "A informar"}</span></p><p><strong>Comunicado</strong><span className={styles.text}>{meeting.announcement || "Nenhum comunicado publicado."}</span></p></div>
+        {secretary && <details className={styles.detail}><summary>Editar local e comunicado</summary><form action={changeEncounter} className={styles.form} key={`meeting-${meeting.version}`}>
           <input type="hidden" name="encounter" value={meeting.id}/><input type="hidden" name="version" value={meeting.version}/>
           <label>Local do encontro<input name="location" defaultValue={meeting.location} maxLength={300}/></label>
           <label>Comunicado para a célula<textarea name="announcement" defaultValue={meeting.announcement} maxLength={2000}/></label>
           <p>Estas informações ficam visíveis aos participantes da célula. Use o relatório para registros internos.</p>
           <SubmitButton name="operation" value="encounter">Salvar informações do encontro</SubmitButton>
-        </form>}
-        {secretary && <div className={styles.attendance}>
+        </form></details>}
+        {secretary && <details className={styles.detail} open={!report || report.status === "draft"}>
+          <summary>Registrar presença</summary><div className={styles.attendance}>
           <h3>Presença da célula</h3>
           <p>Registre cada pessoa vinculada à célula. Sem registro não significa ausência. A lista fica reservada à Secretaria; o Líder receberá apenas os totais no relatório.</p>
           {!rosters.get(meeting.id)?.length && <p>Nenhuma pessoa vinculada a esta célula.</p>}
@@ -74,8 +74,8 @@ export default async function SharedEncounters({ searchParams }: { searchParams:
             {(!report || report.status === "draft") && <SubmitButton name="operation" value="attendance">Salvar presença</SubmitButton>}
           </form>)}
           {report && report.status !== "draft" && <p>Presenças encerradas com o envio do relatório.</p>}
-        </div>}
-        {(secretary || (leader && report)) && <><h3>Relatório reservado</h3><p>{statusLabels[report?.status ?? "draft"]}</p>
+        </div></details>}
+        {(secretary || (leader && report)) && <div className={styles.report}><div className={styles.reportHeading}><h3>Relatório reservado</h3><span className={styles.role}>{statusLabels[report?.status ?? "draft"]}</span></div>
           {report?.status !== "draft" && report?.present_count != null && <p>Presença no envio: {report.present_count} presente(s), {report.absent_count} ausente(s), {report.unregistered_count} sem registro.</p>}
           {report?.status !== "draft" && report?.present_count == null && report && <p>Relatório anterior ao registro de presença: totais indisponíveis.</p>}
           {secretary && (!report || report.status === "draft") ? <form action={changeEncounter} className={styles.form} key={`report-${report?.version ?? 0}`}>
@@ -88,9 +88,9 @@ export default async function SharedEncounters({ searchParams }: { searchParams:
             <input type="hidden" name="encounter" value={meeting.id}/><input type="hidden" name="version" value={report.version}/>
             <SubmitButton name="operation" value="view">Registrar minha leitura</SubmitButton>
           </form>}
-        </>}
+        </div>}
       </section>;
     })}
-    <Link href="/">Voltar à demonstração</Link>
+    <Link className={styles.backLink} href="/">Voltar à demonstração</Link>
   </main>;
 }

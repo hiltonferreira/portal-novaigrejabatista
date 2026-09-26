@@ -28,6 +28,13 @@
 
 ## Tradução para o Portal
 
+### Experimento escuro da Secretaria no Preview (26/09/2026)
+
+- A área demonstrativa `/secretaria` oferece uma opção para ativar a versão escura inspirada no contraste do site público: fundo azul profundo, cartões azul intermediário, texto marfim e laranja reservado a ações e destaques. A opção clara é inicial; a escolha é salva apenas no navegador.
+- Este experimento mantém as demais áreas do Portal no tema anterior para avaliação comparativa; não estabelece ainda a escolha final de tema de todo o produto.
+- Na Secretaria, títulos de navegação, conteúdo principal, linhas de encontro, botões e formulários devem ter tamanho suficiente para leitura sem depender de texto em caixa alta pequeno. A cor sozinha não comunica estados.
+- A entrada da Secretaria leva diretamente aos encontros, eliminando a aba redundante de Visão Geral. Quando os exemplos estiverem no passado, o planejamento do próximo encontro assume a prioridade.
+
 Herdar conceitualmente linguagem editorial, chapéus, proporções, botões, bordas, superfícies, hover, ritmo, identidade e responsividade, sem copiar cegamente o espaçamento de uma landing page para aplicação densa.
 
 `[DECISÃO DE PRODUTO]` A Home aprovada é a referência de composição, densidade, tags, títulos, cards, espaçamento e ações para as demais telas do Portal.

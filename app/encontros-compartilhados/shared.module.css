@@ -1,7 +1,26 @@
-.page { max-width: 780px; margin: auto; padding: 28px 20px 60px; color: #060749; }
+.page { max-width: 920px; margin: auto; padding: 32px 20px 72px; color: #060749; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+.header { display: flex; justify-content: space-between; align-items: start; gap: 28px; padding-bottom: 28px; border-bottom: 1px solid #c6c9d1; }
+.eyebrow { margin: 0 0 8px; font-size: .74rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.intro { max-width: 48ch; margin: 8px 0 0; color: #454761; }
+.account { display: grid; gap: 4px; justify-items: end; font-size: .84rem; }
+.account strong { max-width: 300px; overflow-wrap: anywhere; }
+.account .actions { margin-top: 10px; }
+.notice { padding: 14px 18px; border-radius: 12px; background: #f4f4ee; color: #35364f; }
 .page h1 { font-size: clamp(1.6rem, 4vw, 2.2rem); }
+.page h2 { font-size: clamp(1.15rem, 3vw, 1.45rem); margin: 0; }
+.page h3 { font-size: 1.05rem; margin: 0; }
 .page p { line-height: 1.6; }
-.card { border: 1px solid #c6c9d1; border-radius: 14px; padding: 20px; margin: 24px 0; background: #fff; }
+.card { border: 1px solid #c6c9d1; border-radius: 14px; padding: clamp(18px, 3vw, 28px); margin: 24px 0; background: #fff; }
+.meetingHeading, .reportHeading { display: flex; align-items: start; justify-content: space-between; gap: 12px; }
+.role { display: inline-flex; align-items: center; min-height: 28px; padding: 2px 10px; border: 1px solid #c6c9d1; border-radius: 999px; font-size: .78rem; font-weight: 600; white-space: nowrap; }
+.meetingInfo { display: grid; grid-template-columns: minmax(150px, 1fr) minmax(0, 2fr); gap: 16px; margin: 20px 0; }
+.meetingInfo p { display: grid; align-content: start; gap: 6px; margin: 0; padding: 14px 16px; background: #f7f7f2; border-radius: 10px; }
+.meetingInfo strong { font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; }
+.detail, .report { border-top: 1px solid #dfe0e4; padding: 18px 0; }
+.detail summary { cursor: pointer; font-weight: 700; min-height: 44px; align-content: center; }
+.detail summary:hover, .backLink:hover { text-decoration: underline; }
+.report { padding-bottom: 0; }
+.backLink { display: inline-block; margin-top: 8px; color: #060749; font-weight: 600; }
 .form { display: grid; gap: 16px; margin-block: 20px; }
 .form label { display: grid; gap: 8px; font-weight: 600; }
 .form input, .form textarea { padding: 12px; font: inherit; border: 1px solid #767b8b; border-radius: 8px; width: 100%; box-sizing: border-box; }
@@ -13,7 +32,8 @@
 .text { white-space: pre-wrap; overflow-wrap: anywhere; }
 .form button[value="draft"] { background: #EBEBDF; border-color: #060749; }
 .page button:disabled { opacity: .65; cursor: wait; }
-.attendance { border-top: 1px solid #c6c9d1; padding-top: 12px; margin-top: 24px; }
+.attendance { padding-top: 4px; }
 .attendanceRow { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; justify-content: space-between; border-bottom: 1px solid #dfe0e4; padding: 12px 0; }
 .attendanceRow label { display: grid; gap: 8px; flex: 1 1 180px; font-weight: 600; }
 .attendanceRow select { padding: 12px; min-height: 44px; font: inherit; border: 1px solid #767b8b; border-radius: 8px; background: white; color: #060749; }
+@media (max-width: 620px) { .header { display: grid; gap: 20px; } .account { justify-items: start; } .meetingInfo { grid-template-columns: 1fr; } .meetingHeading { align-items: start; } }

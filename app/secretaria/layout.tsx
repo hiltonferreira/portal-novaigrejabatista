@@ -6,7 +6,7 @@ import styles from "./secretaria.module.css";
 
 export default function SecretariatLayout({ children }: { children: React.ReactNode }) {
   return (
-    <PortalShell currentPath="/secretaria" className={styles.secretariatTheme}>
+    <PortalShell currentPath="/secretaria" className={`${styles.secretariatTheme} ${styles.secretariatDark}`}>
       <header className={styles.header}>
         <PageTitle leading="Secretaria da" accent="Célula" />
         <div className={styles.headerContext}>

@@ -6,10 +6,13 @@ import { ContextTag, SectionLabel, StatusTag } from "@/components/portal-pattern
 import { formatShortDate } from "@/data/cell";
 import { secretariatOverviewMock as overview } from "@/data/secretariat";
 import { MeetingTemporalTag } from "./_components/meeting-temporal-tag";
+import { SecretariatMeetingsOverview } from "./_components/secretariat-meetings-overview";
 import styles from "./secretaria.module.css";
 
 export default function SecretariatOverviewPage() {
   const meeting = useMeeting(overview.nextMeeting.id)!;
+  const today = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Porto_Velho", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
+  if (meeting.dateIso < today) return <SecretariatMeetingsOverview />;
 
   return (
     <div className={styles.overview}>

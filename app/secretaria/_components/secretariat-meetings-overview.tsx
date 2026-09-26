@@ -72,8 +72,17 @@ export function SecretariatMeetingsOverview() {
   }
 
   return <div className={styles.meetingsOverview}>
+    <section className={styles.meetingsHero} aria-labelledby="meetings-hero-title">
+      <div className={styles.meetingsHeroContent}>
+        <span className={styles.meetingsHeroEyebrow}>Secretaria da Célula · Gênesis</span>
+        <h2 id="meetings-hero-title">Organize o <em>próximo encontro.</em></h2>
+        <p>Crie um encontro e acompanhe a comunicação, a presença e o relatório em um só lugar.</p>
+        <ActionButton type="button" onClick={openForm}>Criar encontro</ActionButton>
+      </div>
+      <ol className={styles.meetingsHeroSteps} aria-label="Etapas de um encontro"><li><span>01</span> Comunicação</li><li><span>02</span> Presença</li><li><span>03</span> Relatório</li></ol>
+    </section>
     <section aria-labelledby="upcoming-meetings-label">
-      <div className={styles.sectionHeadingRow}><SectionLabel id="upcoming-meetings-label">Próximos encontros</SectionLabel><ActionButton type="button" onClick={openForm}>+ Novo encontro</ActionButton></div>
+      <div className={styles.sectionHeadingRow}><SectionLabel id="upcoming-meetings-label">Próximos encontros</SectionLabel><span className={styles.meetingsCount}>{allUpcoming.length} cadastrado{allUpcoming.length === 1 ? "" : "s"}</span></div>
       {open ? <form className={styles.newMeetingForm} onSubmit={submit} onKeyDown={(event) => { if (event.key === "Escape") cancel(); }}>
         <div className={styles.newMeetingHeading}><div><ContextTag>Planejamento</ContextTag><h2>Novo encontro</h2></div><p>A data e o horário habituais da Gênesis são apenas sugestões.</p></div>
         <div className={styles.newMeetingFields}>
@@ -84,9 +93,9 @@ export function SecretariatMeetingsOverview() {
         <div className={styles.newMeetingActions}><ActionButton type="button" variant="secondary" onClick={cancel}>Cancelar</ActionButton><ActionButton type="submit">Criar encontro</ActionButton></div>
       </form> : null}
       {!open && feedback ? <p className={styles.createdMeetingFeedback} role="status">{feedback}</p> : null}
-      <article className={`${styles.card} ${styles.meetingsCard}`}><ul className={styles.meetingList}>{allUpcoming.map((meeting) => <li key={meeting.id}><MeetingLink meeting={meeting} /></li>)}</ul>{allUpcoming.length === 0 ? <p className={styles.meetingEmpty}>Nenhum próximo encontro cadastrado.</p> : null}</article>
+      {allUpcoming.length ? <article className={`${styles.card} ${styles.meetingsCard}`}><ul className={styles.meetingList}>{allUpcoming.map((meeting) => <li key={meeting.id}><MeetingLink meeting={meeting} /></li>)}</ul></article> : <div className={styles.meetingsEmptyState}><strong>Nenhum encontro futuro cadastrado.</strong><p>Os exemplos de setembro estão no histórico. Crie uma nova data para continuar a demonstração.</p></div>}
     </section>
-    <section aria-labelledby="previous-meetings-label"><SectionLabel id="previous-meetings-label">Encontros anteriores</SectionLabel><article className={`${styles.card} ${styles.meetingsCard} ${styles.historyCard}`}><ul className={styles.meetingList}>{previousMeetings.map((meeting) => <li key={meeting.id}><MeetingLink meeting={meeting} /></li>)}</ul></article></section>
+    <section aria-label="Encontros anteriores"><details className={styles.meetingsHistory}><summary><span>Encontros anteriores</span><small>{previousMeetings.length} registro{previousMeetings.length === 1 ? "" : "s"} · abrir histórico</small></summary><article className={`${styles.card} ${styles.meetingsCard} ${styles.historyCard}`}><ul className={styles.meetingList}>{previousMeetings.map((meeting) => <li key={meeting.id}><MeetingLink meeting={meeting} /></li>)}</ul></article></details></section>
   </div>;
 }
 

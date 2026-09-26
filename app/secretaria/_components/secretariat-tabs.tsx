@@ -6,7 +6,6 @@ import { useEffect, useRef, useState } from "react";
 import styles from "../secretaria.module.css";
 
 const tabs = [
-  { label: "Visão Geral", href: "/secretaria" },
   { label: "Encontros", href: "/secretaria/encontros" },
   { label: "Lanche", href: "/secretaria/lanche" },
   { label: "Pessoas", href: "/secretaria/pessoas" },
@@ -83,9 +82,7 @@ export function SecretariatTabs() {
       {scrollEdges.left ? <button className={`${styles.tabsScrollControl} ${styles.tabsScrollPrevious}`} type="button" aria-label="Mostrar opções anteriores" onClick={() => reveal("previous")}>‹</button> : null}
       <nav ref={viewportRef} className={styles.tabs} aria-label="Seções da Secretaria da Célula">
         {tabs.map((tab, index) => {
-          const isActive = tab.href === "/secretaria"
-            ? pathname === tab.href
-            : pathname === tab.href || pathname.startsWith(`${tab.href}/`);
+          const isActive = pathname === tab.href || pathname.startsWith(`${tab.href}/`);
 
           return (
             <Link
